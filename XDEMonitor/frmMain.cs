@@ -222,30 +222,12 @@ namespace XDEMonitor
 
         private void ResetBackgroundColor()
         {
-            //foreach (ListViewItem item in listViewXDE.Items)
-            //{
-            //    foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
-            //    {
-            //        item.BackColor = Color.White;
-            //        subItem.BackColor = Color.White;
-            //    }
-            //}
+
         }
 
         private void HighlightMatchedSearchItems(string strSearch)
         {
-            //foreach (ListViewItem item in listViewXDE.Items)
-            //{
-            //    foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
-            //    {
-            //        if (subItem.Text.ToLower().Contains(strSearch))
-            //        {
-            //            item.BackColor = Color.Blue;
-            //            subItem.BackColor = Color.Blue;
-            //            listViewXDE.TopItem = item;
-            //        }
-            //    }
-            //}
+
         }
         
         private void onSaveAs(object sender, EventArgs e)
@@ -266,21 +248,18 @@ namespace XDEMonitor
         {
             using (TextWriter writer = new StreamWriter(fileName))
             {
-                //foreach (ListViewItem item in listViewXDE.Items)
-                //{
-                //    writer.WriteLine("========");
-                //    foreach (ListViewItem.ListViewSubItem subItem in item.SubItems)
-                //    {
-                        writer.Write(rtbConsole.Text/*subItem.Text*/);
-                //    }
-                //    writer.WriteLine("========");
-                //}
+                writer.Write(rtbConsole.Text);
             }
         }
 
         private void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            rtbConsole.Clear();
         }
     }
 }

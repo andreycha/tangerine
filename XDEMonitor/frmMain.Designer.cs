@@ -40,6 +40,7 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtbConsole = new System.Windows.Forms.RichTextBox();
+            this.btnClear = new System.Windows.Forms.Button();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,6 +71,7 @@
             this.labelMsg.Size = new System.Drawing.Size(59, 13);
             this.labelMsg.TabIndex = 2;
             this.labelMsg.Text = "API Hook: ";
+            this.labelMsg.Visible = false;
             // 
             // label1
             // 
@@ -81,6 +83,7 @@
             this.label1.Size = new System.Drawing.Size(50, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Find text:";
+            this.label1.Visible = false;
             // 
             // textSearchStr
             // 
@@ -90,6 +93,7 @@
             this.textSearchStr.Name = "textSearchStr";
             this.textSearchStr.Size = new System.Drawing.Size(110, 20);
             this.textSearchStr.TabIndex = 4;
+            this.textSearchStr.Visible = false;
             // 
             // btnSearch
             // 
@@ -101,6 +105,7 @@
             this.btnSearch.TabIndex = 5;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Visible = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // menu
@@ -152,6 +157,18 @@
             this.rtbConsole.Text = "";
             this.rtbConsole.WordWrap = false;
             // 
+            // btnClear
+            // 
+            this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClear.Location = new System.Drawing.Point(604, 417);
+            this.btnClear.Margin = new System.Windows.Forms.Padding(2);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(58, 23);
+            this.btnClear.TabIndex = 1;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -162,6 +179,7 @@
             this.Controls.Add(this.textSearchStr);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelMsg);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.menu);
             this.Margin = new System.Windows.Forms.Padding(2);
@@ -187,6 +205,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.RichTextBox rtbConsole;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 
