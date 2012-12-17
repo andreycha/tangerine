@@ -5,8 +5,9 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Microsoft.SmartDevice.Connectivity;
-using Shell32;
 using Tangerine.BLL.Hooks;
+using ICSharpCode.SharpZipLib.Zip;
+using ICSharpCode.SharpZipLib.Core;
 
 namespace Tangerine.BLL.Tasks
 {
@@ -132,20 +133,17 @@ namespace Tangerine.BLL.Tasks
 
             string tempFileName = Path.Combine(GetInstrumentedXAPPath(), m_xap.ProductId);
             string zipFileName = tempFileName + ".zip";
-            string newFileName = tempFileName + ".xap";
+            string xapFileName = tempFileName + ".xap";
 
             File.Delete(zipFileName);
-            File.Delete(newFileName);
-            
-            CreateEmptyZip(zipFileName);
-            CopyZipFiles(GetInstrumentedPath(), zipFileName);
-            
-            // wait for shell32.dll
-            Thread.Sleep(m_config.ZipWaitTime);    
-            File.Move(zipFileName, newFileName);
+            File.Delete(xapFileName);
+
+            CreateZip(zipFileName, GetInstrumentedPath());
+
+            File.Move(zipFileName, xapFileName);
             m_addText.Invoke("(Done)");
 
-            return newFileName;
+            return xapFileName;
         }
 
         private void CreateEmptyZip(string destinationFile)
@@ -157,13 +155,54 @@ namespace Tangerine.BLL.Tasks
             }
         }
 
-        private static void CopyZipFiles(string sourceFolder, string destinationFile)
+        public void CreateZip(string zipFileName, string folderName)
         {
-            Shell shell = new Shell();
-            Folder srcFolder = shell.NameSpace(sourceFolder);
-            Folder destFolder = shell.NameSpace(destinationFile);
-            FolderItems items = srcFolder.Items();
-            destFolder.CopyHere(items, 20);
+            using (FileStream stream = File.Create(zipFileName))
+            {
+                using (ZipOutputStream zipStream = new ZipOutputStream(stream))
+                {
+                    zipStream.SetLevel(3); //0-9, 9 the highest level of compression
+                    zipStream.Password = null;
+                    int folderOffset = folderName.Length + (folderName.EndsWith("\\") ? 0 : 1);
+                    CompressFolder(folderName, zipStream, folderOffset);
+                }
+            }
+        }
+
+        private void CompressFolder(string path, ZipOutputStream zipStream, int folderOffset)
+        {
+            string[] files = Directory.GetFiles(path);
+
+            foreach (string filename in files)
+            {
+                FileInfo fi = new FileInfo(filename);
+
+                string entryName = filename.Substring(folderOffset); // Makes the name in zip based on the folder
+                entryName = ZipEntry.CleanName(entryName); // Removes drive from name and fixes slash direction
+
+                ZipEntry newEntry = new ZipEntry(entryName);
+                newEntry.DateTime = fi.LastWriteTime;
+                newEntry.Size = fi.Length;
+                
+                zipStream.UseZip64 = UseZip64.Off;
+                zipStream.PutNextEntry(newEntry);
+
+                // Zip the file in buffered chunks
+                // the "using" will close the stream even if an exception occurs
+                byte[] buffer = new byte[4096];
+                using (FileStream streamReader = File.OpenRead(filename))
+                {
+                    StreamUtils.Copy(streamReader, zipStream, buffer);
+                }
+                zipStream.CloseEntry();
+            }
+
+            // traverse through other directories
+            string[] folders = Directory.GetDirectories(path);
+            foreach (string folder in folders)
+            {
+                CompressFolder(folder, zipStream, folderOffset);
+            }
         }
 
         private void InstallApplication(string newFileName)
