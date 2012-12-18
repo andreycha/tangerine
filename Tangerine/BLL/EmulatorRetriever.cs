@@ -23,7 +23,7 @@ namespace Tangerine.BLL
             Device emulator = platform.GetDevices().FirstOrDefault(d => d.Name == WP70Emulator);
             if (emulator == null)
             {
-                emulator = platform.GetDevices().FirstOrDefault(d => d.Name == WP71Emulator);
+                emulator = platform.GetDevices().FirstOrDefault(d => d.Name.StartsWith(WP71Emulator));
             }
 
             if (emulator == null)
