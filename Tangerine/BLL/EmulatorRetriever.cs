@@ -28,7 +28,7 @@ namespace Tangerine.BLL
 
             if (emulator == null)
             {
-                throw new InvalidOperationException("There is no registed Windows Phone emulator");
+                throw new InvalidOperationException("There is no registered Windows Phone emulator.");
             }
 
             return emulator;
