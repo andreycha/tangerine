@@ -10,6 +10,7 @@ using Mono.Cecil;
 using Tangerine.BLL;
 using Tangerine.BLL.Hooks;
 using Tangerine.BLL.Tasks;
+using Tangerine.Devices;
 
 namespace Tangerine.UI.BLL
 {
@@ -72,6 +73,7 @@ namespace Tangerine.UI.BLL
         private void HandleError(Exception exception)
         {
             m_view.ShowError(exception);
+            m_view.ResetButton("run");
         }
 
         private void ProcessAssemblyNodeToTree(Node assemblyNode, XAPAssembly assembly)
@@ -162,11 +164,11 @@ namespace Tangerine.UI.BLL
             }
         }
 
-        internal void Deploy()
+        internal void Deploy(DeviceType device)
         {
             if (m_xap == null)
             {
-                throw new InvalidOperationException("Target application is not selected");
+                throw new InvalidOperationException("Target application is not selected.");
             }
 
             var hookProvider = new HookProvider(
@@ -176,19 +178,26 @@ namespace Tangerine.UI.BLL
                 m_view.GetHooks()
                 );
 
-            int waitTime = Convert.ToInt32(ConfigurationManager.AppSettings["Shell32WaitTime"]);
-            var config = new DeployerThreadConfig(waitTime);
-
-            PatchTask deployThreadClass = new PatchTask(
+            PatchTask patchTask = new PatchTask(
                 m_xap,
                 hookProvider,
-                config,
+                device,
                 AddOutputText,
                 ResetButton
                 );
 
-            Thread deployerThread = new Thread(deployThreadClass.Run);
-            deployerThread.Start();
+            var context = TaskScheduler.FromCurrentSynchronizationContext();
+
+            Task.Factory.StartNew(patchTask.Run)
+                .ContinueWith(t =>
+                {
+                    if (t.IsFaulted)
+                    {
+                        HandleError(t.Exception.InnerException);
+                    }
+                },
+                context
+                );
         }
 
         internal void EditMethodHook()

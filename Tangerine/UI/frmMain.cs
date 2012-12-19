@@ -9,6 +9,7 @@ using Aga.Controls.Tree;
 using Microsoft.Win32;
 using Tangerine.BLL;
 using Tangerine.BLL.Hooks;
+using Tangerine.Devices;
 using Tangerine.UI.BLL;
 using Tangerine.UI.BLL.AssemblyTree;
 
@@ -21,10 +22,13 @@ namespace Tangerine.UI
         private readonly MainPresenter m_presenter;
 
         private TreeModel m_TreeModel;
+        private ContextMenu m_contextMenu;
 
         public frmMain()
         {
             InitializeComponent();
+
+            InitializeDeployContextMenu();
 
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
@@ -35,6 +39,16 @@ namespace Tangerine.UI
             nodeIcon1.ToolTipProvider = new ToolTipProv("IO operations");
             nodeIcon2.ToolTipProvider = new ToolTipProv("Net operations");
             nodeIcon3.ToolTipProvider = new ToolTipProv("Security operations");
+        }
+
+        private void InitializeDeployContextMenu()
+        {
+            var emulatorMenuItem = new MenuItem("Emulator", DeployToEmulator);
+            var deviceMenuItem = new MenuItem("Device", DeployToDevice);
+
+            m_contextMenu = new ContextMenu();
+            m_contextMenu.MenuItems.Add(emulatorMenuItem);
+            m_contextMenu.MenuItems.Add(deviceMenuItem);
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -256,14 +270,29 @@ namespace Tangerine.UI
              
         private void btnDeploy_Click(object sender, EventArgs e)
         {
+            m_contextMenu.Show(btnDeploy, btnDeploy.PointToClient(Cursor.Position));
+        }
+
+        private void PrepareForDeploy()
+        {
             txtOutput.Clear();
             btnBrowseFile.Enabled = false;
             btnBrowseFolder.Enabled = false;
             btnDeploy.Enabled = false;
 
             KillXDEMonitor();
+        }
 
-            m_presenter.Deploy();
+        private void DeployToEmulator(object sender, EventArgs e)
+        {
+            PrepareForDeploy();
+            m_presenter.Deploy(DeviceType.Emulator);
+        }
+
+        private void DeployToDevice(object sender, EventArgs e)
+        {
+            PrepareForDeploy();
+            m_presenter.Deploy(DeviceType.Device);
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -424,7 +453,6 @@ namespace Tangerine.UI
                 }
             }
         }
-
 
         void IMainView.ShowError(Exception exception)
         {

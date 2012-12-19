@@ -1,13 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Threading;
-using Microsoft.SmartDevice.Connectivity;
-using Tangerine.BLL.Hooks;
-using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Core;
+using ICSharpCode.SharpZipLib.Zip;
+using Microsoft.SmartDevice.Connectivity;
+using Tangerine.BLL.Devices;
+using Tangerine.BLL.Hooks;
+using Tangerine.Devices;
 
 namespace Tangerine.BLL.Tasks
 {
@@ -26,21 +26,21 @@ namespace Tangerine.BLL.Tasks
 
         private readonly byte[] m_emptyZip = new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
         private readonly IHookProvider m_hookProvider;
-        private readonly DeployerThreadConfig m_config;
+        private readonly DeviceType m_deviceType;
 
         internal PatchTask(
             XAP xap,
             IHookProvider hookProvider,
-            DeployerThreadConfig config,
+            DeviceType deviceType,
             Action<string> addText,
             Action<string> resetButton
             )
         {
             m_xap = xap;
+            m_hookProvider = hookProvider;
+            m_deviceType = deviceType;
             m_addText = addText;
             m_resetButton = resetButton;
-            m_hookProvider = hookProvider;
-            m_config = config;
         }
 
         internal void Run()
@@ -84,7 +84,12 @@ namespace Tangerine.BLL.Tasks
 
             InstallApplication(newFileName);
 
-            RunXDEMonitor();
+            if (m_deviceType == DeviceType.Emulator)
+            {
+                RunXDEMonitor();
+            }
+
+            m_resetButton.Invoke("run");
         }
 
         private void PrepareFilesForPatching()
@@ -207,9 +212,9 @@ namespace Tangerine.BLL.Tasks
 
         private void InstallApplication(string newFileName)
         {
-            m_addText.Invoke("Connecting to emulator...");
+            m_addText.Invoke(String.Format("Connecting to {0}...", m_deviceType.ToString().ToLower()));
 
-            Device emulator = new EmulatorRetriever().GetEmulator();
+            Device emulator = new DeviceRetriever().GetDevice(m_deviceType);
             emulator.Connect();
             Guid appGUID = UninstallApplication(emulator);
             m_addText.Invoke("(Done)");
@@ -244,8 +249,6 @@ namespace Tangerine.BLL.Tasks
             processObj.Start();
 
             m_addText.Invoke("Running XDE Monitor...");
-
-            m_resetButton.Invoke("run");
         }
     }
 }

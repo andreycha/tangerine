@@ -78,8 +78,8 @@
     <Compile Include="BLL\Hooks\HookProvider.cs" />
     <Compile Include="BLL\Hooks\IHookProvider.cs" />
     <Compile Include="BLL\Hooks\MethodHook.cs" />
-    <Compile Include="BLL\DeployerThreadConfig.cs" />
-    <Compile Include="BLL\EmulatorRetriever.cs" />
+    <Compile Include="Devices\DeviceType.cs" />
+    <Compile Include="Devices\DeviceRetriever.cs" />
     <Compile Include="BLL\MethodDefinitionExtension.cs" />
     <Compile Include="BLL\XAP\XAP.cs" />
     <Compile Include="BLL\XAP\XAPAssembly.cs" />
