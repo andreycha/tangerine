@@ -1,5 +1,6 @@
 ﻿using Aga.Controls.Tree;
 using Mono.Cecil;
+using Tangerine.Properties;
 
 namespace Tangerine.UI.BLL
 {
@@ -25,12 +26,13 @@ namespace Tangerine.UI.BLL
         }
     }
 
-    public class PropertyNode : Node
+    public class PropertyNode : TreeNode
     {
         public PropertyNode(PropertyDefinition definition, string text)
             : base(text)
         {
             Definition = definition;
+            Icon = Resources.property;
         }
 
         public PropertyDefinition Definition { get; private set; }

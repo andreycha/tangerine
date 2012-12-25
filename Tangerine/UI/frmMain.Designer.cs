@@ -67,6 +67,7 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
+            this.nodeIcon4 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -242,6 +243,7 @@
             this.trvAssemblies.Location = new System.Drawing.Point(0, 0);
             this.trvAssemblies.Model = null;
             this.trvAssemblies.Name = "trvAssemblies";
+            this.trvAssemblies.NodeControls.Add(this.nodeIcon4);
             this.trvAssemblies.NodeControls.Add(this.nodeTextBox1);
             this.trvAssemblies.NodeControls.Add(this.nodeIcon1);
             this.trvAssemblies.NodeControls.Add(this.nodeIcon2);
@@ -373,7 +375,7 @@
             this.chbLogReturnValues.Location = new System.Drawing.Point(8, 63);
             this.chbLogReturnValues.Margin = new System.Windows.Forms.Padding(2);
             this.chbLogReturnValues.Name = "chbLogReturnValues";
-            this.chbLogReturnValues.Size = new System.Drawing.Size(108, 17);
+            this.chbLogReturnValues.Size = new System.Drawing.Size(107, 17);
             this.chbLogReturnValues.TabIndex = 24;
             this.chbLogReturnValues.Text = "Log return values";
             this.chbLogReturnValues.UseVisualStyleBackColor = true;
@@ -385,7 +387,7 @@
             this.chbLogParameters.Location = new System.Drawing.Point(8, 42);
             this.chbLogParameters.Margin = new System.Windows.Forms.Padding(2);
             this.chbLogParameters.Name = "chbLogParameters";
-            this.chbLogParameters.Size = new System.Drawing.Size(128, 17);
+            this.chbLogParameters.Size = new System.Drawing.Size(127, 17);
             this.chbLogParameters.TabIndex = 24;
             this.chbLogParameters.Text = "Log parameter values";
             this.chbLogParameters.UseVisualStyleBackColor = true;
@@ -396,7 +398,7 @@
             this.chbLogMethods.Location = new System.Drawing.Point(8, 21);
             this.chbLogMethods.Margin = new System.Windows.Forms.Padding(2);
             this.chbLogMethods.Name = "chbLogMethods";
-            this.chbLogMethods.Size = new System.Drawing.Size(116, 17);
+            this.chbLogMethods.Size = new System.Drawing.Size(115, 17);
             this.chbLogMethods.TabIndex = 23;
             this.chbLogMethods.Text = "Log method names";
             this.chbLogMethods.UseVisualStyleBackColor = true;
@@ -506,6 +508,10 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
+            // nodeIcon4
+            // 
+            this.nodeIcon4.DataPropertyName = "Icon";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -585,6 +591,7 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Button btnBrowseFolder;
         private System.Windows.Forms.CheckBox chbLogReturnValues;
+        private Aga.Controls.Tree.NodeControls.NodeIcon nodeIcon4;
 
     }
 }

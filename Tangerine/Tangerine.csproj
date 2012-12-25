@@ -90,6 +90,7 @@
     <Compile Include="UI.BLL\AssemblyTree\MethodNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\PropertyNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\ToolTipProv.cs" />
+    <Compile Include="UI.BLL\AssemblyTree\TreeNode.cs" />
     <Compile Include="UI.BLL\IIncrementalSearchView.cs" />
     <Compile Include="UI.BLL\IMainView.cs" />
     <Compile Include="UI.BLL\IncrementalSearchPresenter.cs" />
@@ -170,9 +171,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="1352152419_ball-1x1.ico" />
-    <None Include="security.png" />
-    <None Include="network.png" />
-    <None Include="file.png" />
+    <None Include="Resources\enum.png" />
+    <None Include="Resources\class.png" />
+    <None Include="Resources\method.png" />
+    <None Include="Resources\property.png" />
+    <None Include="Resources\assembly.png" />
+    <None Include="Resources\security.png" />
+    <None Include="Resources\network.png" />
+    <None Include="Resources\file.png" />
     <Content Include="EasyHook.XML">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

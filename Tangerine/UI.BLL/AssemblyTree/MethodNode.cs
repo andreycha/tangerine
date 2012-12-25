@@ -66,12 +66,13 @@ namespace Tangerine.UI.BLL
     }
 
 
-    public class MethodNode : Node
+    public class MethodNode : TreeNode
     {
         public MethodNode(MethodDefinition definition, string text)
             : base(text)
         {
             Definition = definition;
+            Icon = Resources.method;
         }
 
         public Image IOIcon { get; set; }

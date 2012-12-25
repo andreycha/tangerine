@@ -51,7 +51,7 @@ namespace Tangerine.UI.BLL
 
                     foreach (var assembly in m_xap.Assemblies)
                     {
-                        var assemblyNode = new Node(new FileInfo(assembly.AssemblyPath).Name);
+                        var assemblyNode = new AssemblyNode(new FileInfo(assembly.AssemblyPath).Name);
                         rootNode.Nodes.Add(assemblyNode);
                         ProcessAssemblyNodeToTree(assemblyNode, assembly);
                     }
@@ -87,7 +87,7 @@ namespace Tangerine.UI.BLL
                     continue;
                 }
 
-                var typeNode = new Node(typeDefinition.Name);
+                var typeNode = new TypeNode(typeDefinition.Name);
                 assemblyNode.Nodes.Add(typeNode);
                 ProcessTypeNodeToTree(typeNode, typeDefinition);
             }
@@ -101,7 +101,7 @@ namespace Tangerine.UI.BLL
                 {
                     if (enumItem.IsSpecialName)
                         continue;
-                    var enumItemNode = new Node(enumItem.Name);
+                    var enumItemNode = new EnumNode(enumItem.Name);
                     typeNode.Nodes.Add(enumItemNode);
                 }
                 return;
