@@ -54,10 +54,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\References\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Smartdevice.Connectivity, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files\Common Files\microsoft shared\Phone Tools\CoreCon\10.0\Bin\Microsoft.Smartdevice.Connectivity.dll</HintPath>
-    </Reference>
     <Reference Include="Mono.Cecil, Version=0.6.9.0, Culture=neutral, PublicKeyToken=612425994f11cf55, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Mono.Cecil.dll</HintPath>
@@ -87,6 +83,8 @@
     <Compile Include="BLL\XAP\Capability.cs" />
     <Compile Include="BLL\XAP\FileInfoEventArgs.cs" />
     <Compile Include="BLL\XAP\ManifestReader.cs" />
+    <Compile Include="Devices\WPDevice.cs" />
+    <Compile Include="Devices\WP7Device.cs" />
     <Compile Include="UI.BLL\AssemblyTree\MethodNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\PropertyNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\ToolTipProv.cs" />

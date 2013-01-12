@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using Microsoft.SmartDevice.Connectivity;
 using Tangerine.BLL.Devices;
 using Tangerine.BLL.Hooks;
 using Tangerine.Devices;
@@ -214,9 +213,11 @@ namespace Tangerine.BLL.Tasks
         {
             m_addText.Invoke(String.Format("Connecting to {0}...", m_deviceType.ToString().ToLower()));
 
-            Device emulator = new DeviceRetriever().GetDevice(m_deviceType);
+            Guid appGUID = new Guid(m_xap.ProductId);
+
+            WPDevice emulator = new DeviceRetriever().GetDevice(m_deviceType);
             emulator.Connect();
-            Guid appGUID = UninstallApplication(emulator);
+            UninstallApplication(emulator, appGUID);
             m_addText.Invoke("(Done)");
 
             m_addText.Invoke("Deploying application...");
@@ -227,19 +228,14 @@ namespace Tangerine.BLL.Tasks
             m_addText.Invoke("(Done)");
         }
 
-        private Guid UninstallApplication(Device emulator)
+        private void UninstallApplication(WPDevice emulator, Guid appGUID)
         {
-            Guid appGUID = new Guid(m_xap.ProductId);
-
             if (emulator.IsApplicationInstalled(appGUID))
             {
                 m_addText.Invoke("(Done)");
                 m_addText.Invoke("Uninstalling previous version...");
-                RemoteApplication app = emulator.GetApplication(appGUID);
-                app.Uninstall();
+                emulator.UninstallApplication(appGUID);
             }
-
-            return appGUID;
         }
 
         public void RunXDEMonitor()

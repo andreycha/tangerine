@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using Microsoft.SmartDevice.Connectivity;
 using Tangerine.BLL.Devices;
 using Tangerine.Devices;
 
@@ -22,13 +21,12 @@ namespace Tangerine.BLL.Tasks
 
         internal void Run()
         {
-            Device emulator = new DeviceRetriever().GetDevice(m_deviceType);
+            WPDevice emulator = new DeviceRetriever().GetDevice(m_deviceType);
             emulator.Connect();
             Guid appGUID = new Guid(m_xap.ProductId);
             if (emulator.IsApplicationInstalled(appGUID))
             {
-                RemoteApplication app = emulator.GetApplication(appGUID);
-                app.Launch();
+                emulator.LaunchApplication(appGUID);
             }
             else
             {
