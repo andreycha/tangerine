@@ -39,6 +39,8 @@ namespace Tangerine.BLL
         
         public string Version { get; private set; }
 
+        public string PlatformVersion { get; private set; }
+
         public IEnumerable<Capability> Capabilities { get; private set; }
 
         public IEnumerable<XAPAssembly> Assemblies 
@@ -133,6 +135,7 @@ namespace Tangerine.BLL
             Version = reader.GetVersion();
             Author = reader.GetAuthor();
             Capabilities = reader.GetCapabilities();
+            PlatformVersion = reader.GetAppPlatformVersion();
         }
 
         private string UnZip(string filePath)

@@ -122,6 +122,7 @@ namespace Tangerine.UI
             lblProductId.Text = "Product ID: " + manifest.ProductId;
             lblTitle.Text = "Title: " + manifest.Title;
             lblVersion.Text = "Version: " + manifest.Version;
+            lblPlatformVersion.Text = "Platform version: " + manifest.PlatformVersion;
             lblAuthor.Text = "Author: " + manifest.Author;
             tbxCapabilities.Clear();
             foreach (var capability in manifest.Capabilities)

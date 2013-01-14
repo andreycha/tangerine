@@ -44,12 +44,14 @@
             this.tabStatic = new System.Windows.Forms.TabPage();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.trvAssemblies = new Aga.Controls.Tree.TreeViewAdv();
+            this.nodeIcon4 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeTextBox1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeIcon1 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon2 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon3 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.pnlCapabilities = new System.Windows.Forms.Panel();
             this.tbxCapabilities = new System.Windows.Forms.TextBox();
+            this.lblPlatformVersion = new System.Windows.Forms.Label();
             this.lblCapabilities = new System.Windows.Forms.Label();
             this.lblAuthor = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
@@ -67,7 +69,6 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
-            this.nodeIcon4 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -224,6 +225,7 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.pnlCapabilities);
+            this.splitContainer.Panel2.Controls.Add(this.lblPlatformVersion);
             this.splitContainer.Panel2.Controls.Add(this.lblCapabilities);
             this.splitContainer.Panel2.Controls.Add(this.lblAuthor);
             this.splitContainer.Panel2.Controls.Add(this.lblVersion);
@@ -254,6 +256,10 @@
             this.trvAssemblies.Text = "treeViewAdv1";
             this.trvAssemblies.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this.trvAssemblies_NodeMouseDoubleClick);
             // 
+            // nodeIcon4
+            // 
+            this.nodeIcon4.DataPropertyName = "Icon";
+            // 
             // nodeTextBox1
             // 
             this.nodeTextBox1.DataPropertyName = "Text";
@@ -276,10 +282,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCapabilities.Controls.Add(this.tbxCapabilities);
-            this.pnlCapabilities.Location = new System.Drawing.Point(15, 158);
+            this.pnlCapabilities.Location = new System.Drawing.Point(15, 174);
             this.pnlCapabilities.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCapabilities.Name = "pnlCapabilities";
-            this.pnlCapabilities.Size = new System.Drawing.Size(509, 305);
+            this.pnlCapabilities.Size = new System.Drawing.Size(509, 289);
             this.pnlCapabilities.TabIndex = 7;
             // 
             // tbxCapabilities
@@ -294,13 +300,23 @@
             this.tbxCapabilities.ReadOnly = true;
             this.tbxCapabilities.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxCapabilities.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbxCapabilities.Size = new System.Drawing.Size(509, 305);
+            this.tbxCapabilities.Size = new System.Drawing.Size(509, 289);
             this.tbxCapabilities.TabIndex = 15;
+            // 
+            // lblPlatformVersion
+            // 
+            this.lblPlatformVersion.AutoSize = true;
+            this.lblPlatformVersion.Location = new System.Drawing.Point(12, 103);
+            this.lblPlatformVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPlatformVersion.Name = "lblPlatformVersion";
+            this.lblPlatformVersion.Size = new System.Drawing.Size(85, 13);
+            this.lblPlatformVersion.TabIndex = 5;
+            this.lblPlatformVersion.Text = "Platform version:";
             // 
             // lblCapabilities
             // 
             this.lblCapabilities.AutoSize = true;
-            this.lblCapabilities.Location = new System.Drawing.Point(12, 131);
+            this.lblCapabilities.Location = new System.Drawing.Point(12, 159);
             this.lblCapabilities.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCapabilities.Name = "lblCapabilities";
             this.lblCapabilities.Size = new System.Drawing.Size(63, 13);
@@ -310,7 +326,7 @@
             // lblAuthor
             // 
             this.lblAuthor.AutoSize = true;
-            this.lblAuthor.Location = new System.Drawing.Point(12, 103);
+            this.lblAuthor.Location = new System.Drawing.Point(12, 131);
             this.lblAuthor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblAuthor.Name = "lblAuthor";
             this.lblAuthor.Size = new System.Drawing.Size(41, 13);
@@ -375,7 +391,7 @@
             this.chbLogReturnValues.Location = new System.Drawing.Point(8, 63);
             this.chbLogReturnValues.Margin = new System.Windows.Forms.Padding(2);
             this.chbLogReturnValues.Name = "chbLogReturnValues";
-            this.chbLogReturnValues.Size = new System.Drawing.Size(107, 17);
+            this.chbLogReturnValues.Size = new System.Drawing.Size(108, 17);
             this.chbLogReturnValues.TabIndex = 24;
             this.chbLogReturnValues.Text = "Log return values";
             this.chbLogReturnValues.UseVisualStyleBackColor = true;
@@ -387,7 +403,7 @@
             this.chbLogParameters.Location = new System.Drawing.Point(8, 42);
             this.chbLogParameters.Margin = new System.Windows.Forms.Padding(2);
             this.chbLogParameters.Name = "chbLogParameters";
-            this.chbLogParameters.Size = new System.Drawing.Size(127, 17);
+            this.chbLogParameters.Size = new System.Drawing.Size(128, 17);
             this.chbLogParameters.TabIndex = 24;
             this.chbLogParameters.Text = "Log parameter values";
             this.chbLogParameters.UseVisualStyleBackColor = true;
@@ -398,7 +414,7 @@
             this.chbLogMethods.Location = new System.Drawing.Point(8, 21);
             this.chbLogMethods.Margin = new System.Windows.Forms.Padding(2);
             this.chbLogMethods.Name = "chbLogMethods";
-            this.chbLogMethods.Size = new System.Drawing.Size(115, 17);
+            this.chbLogMethods.Size = new System.Drawing.Size(116, 17);
             this.chbLogMethods.TabIndex = 23;
             this.chbLogMethods.Text = "Log method names";
             this.chbLogMethods.UseVisualStyleBackColor = true;
@@ -508,10 +524,6 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
-            // nodeIcon4
-            // 
-            this.nodeIcon4.DataPropertyName = "Icon";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -592,6 +604,7 @@
         private System.Windows.Forms.Button btnBrowseFolder;
         private System.Windows.Forms.CheckBox chbLogReturnValues;
         private Aga.Controls.Tree.NodeControls.NodeIcon nodeIcon4;
+        private System.Windows.Forms.Label lblPlatformVersion;
 
     }
 }

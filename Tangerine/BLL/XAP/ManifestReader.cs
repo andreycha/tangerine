@@ -11,12 +11,14 @@ namespace Tangerine.BLL
         string ProductId { get; }
         string Title { get; }
         string Version { get; }
+        string PlatformVersion { get; }
         string Author { get; }
         IEnumerable<Capability> Capabilities { get; }
     }
 
     internal interface IManifestReader
     {
+        string GetAppPlatformVersion();
         string GetProductId();
         string GetTitle();
         string GetVersion();
@@ -26,13 +28,15 @@ namespace Tangerine.BLL
 
     internal class ManifestReader : IManifestReader
     {
-        public const string AppTag = "App";
-        public const string TitleAttribute = "Title";
-        public const string VersionAttribute = "Version";
-        public const string ProductIdAttribute = "ProductID";
-        public const string AuthorAttribute = "Author";
-        public const string CapabilityTag = "Capability";
-        public const string NameAttribute = "Name";
+        private const string AppTag = "App";
+        private const string TitleAttribute = "Title";
+        private const string VersionAttribute = "Version";
+        private const string ProductIdAttribute = "ProductID";
+        private const string AuthorAttribute = "Author";
+        private const string CapabilityTag = "Capability";
+        private const string NameAttribute = "Name";
+        private const string DeploymentTag = "Deployment";
+        private const string AppPlatformVersion = "AppPlatformVersion";
 
         private XDocument m_document;
         private XElement m_appElement;
@@ -46,7 +50,13 @@ namespace Tangerine.BLL
                 throw new ArgumentException("wrong xml");
             }
         }
+
         #region IManifestReader implementation
+
+        public string GetAppPlatformVersion()
+        {
+            return m_document.Root.Attribute(AppPlatformVersion).Value;
+        }
 
         public string GetProductId()
         {
