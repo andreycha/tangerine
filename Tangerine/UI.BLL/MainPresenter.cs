@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Aga.Controls.Tree;
@@ -72,8 +73,28 @@ namespace Tangerine.UI.BLL
 
         private void HandleError(Exception exception)
         {
-            m_view.ShowError(exception);
+            var targetInvocationException = exception as TargetInvocationException;
+            if (targetInvocationException != null)
+            {
+                m_view.ShowError(GetRealExceptionWithStackTrace(targetInvocationException));
+            }
+            else
+            {
+                m_view.ShowError(exception);
+            }
             m_view.ResetButton("run");
+        }
+
+        private Exception GetRealExceptionWithStackTrace(TargetInvocationException tiex)
+        {
+            var remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
+
+            remoteStackTraceString.SetValue(
+                tiex.InnerException,
+                tiex.StackTrace + Environment.NewLine
+                );
+
+            return tiex.InnerException;
         }
 
         private void ProcessAssemblyNodeToTree(Node assemblyNode, XAPAssembly assembly)
