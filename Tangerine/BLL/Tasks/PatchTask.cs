@@ -215,7 +215,7 @@ namespace Tangerine.BLL.Tasks
 
             Guid appGUID = new Guid(m_xap.ProductId);
 
-            WPDevice emulator = new DeviceRetriever().GetDevice(m_deviceType);
+            WPDevice emulator = new DeviceRetriever().GetDevice(m_deviceType, m_xap.PlatformVersion);
             emulator.Connect();
             UninstallApplication(emulator, appGUID);
             m_addText.Invoke("(Done)");

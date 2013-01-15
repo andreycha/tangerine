@@ -21,7 +21,7 @@ namespace Tangerine.BLL.Tasks
 
         internal void Run()
         {
-            WPDevice emulator = new DeviceRetriever().GetDevice(m_deviceType);
+            WPDevice emulator = new DeviceRetriever().GetDevice(m_deviceType, m_xap.PlatformVersion);
             emulator.Connect();
             Guid appGUID = new Guid(m_xap.ProductId);
             if (emulator.IsApplicationInstalled(appGUID))

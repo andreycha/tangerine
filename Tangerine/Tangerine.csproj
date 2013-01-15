@@ -71,6 +71,7 @@
   <ItemGroup>
     <Compile Include="BLL\CustomCode\CustomCodeGenerator.cs" />
     <Compile Include="BLL\CustomCode\ICustomCodeGenerator.cs" />
+    <Compile Include="BLL\Devices\WP8Device.cs" />
     <Compile Include="BLL\Hooks\HookProvider.cs" />
     <Compile Include="BLL\Hooks\IHookProvider.cs" />
     <Compile Include="BLL\Hooks\MethodHook.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="BLL\XAP\FileInfoEventArgs.cs" />
     <Compile Include="BLL\XAP\ManifestReader.cs" />
     <Compile Include="BLL\Devices\WPDevice.cs" />
-    <Compile Include="BLL\Devices\WP7Device.cs" />
     <Compile Include="Common\Util.cs" />
     <Compile Include="UI.BLL\AssemblyTree\MethodNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\PropertyNode.cs" />
