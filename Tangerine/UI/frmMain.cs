@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -272,7 +273,7 @@ namespace Tangerine.UI
              
         private void btnDeploy_Click(object sender, EventArgs e)
         {
-            m_contextMenu.Show(btnDeploy, btnDeploy.PointToClient(Cursor.Position));
+            m_contextMenu.Show(btnDeploy, new Point(btnDeploy.Width, 0));
         }
 
         private void PrepareForDeploy()
