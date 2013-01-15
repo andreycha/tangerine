@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib.Zip;
+using Tangerine.Common;
 
 namespace Tangerine.BLL
 {
@@ -39,7 +40,7 @@ namespace Tangerine.BLL
         
         public string Version { get; private set; }
 
-        public string PlatformVersion { get; private set; }
+        public PlatformVersion PlatformVersion { get; private set; }
 
         public IEnumerable<Capability> Capabilities { get; private set; }
 

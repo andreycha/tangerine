@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Xml.Linq;
+using Tangerine.Common;
 
 namespace Tangerine.BLL
 {
@@ -11,14 +11,14 @@ namespace Tangerine.BLL
         string ProductId { get; }
         string Title { get; }
         string Version { get; }
-        string PlatformVersion { get; }
+        PlatformVersion PlatformVersion { get; }
         string Author { get; }
         IEnumerable<Capability> Capabilities { get; }
     }
 
     internal interface IManifestReader
     {
-        string GetAppPlatformVersion();
+        PlatformVersion GetAppPlatformVersion();
         string GetProductId();
         string GetTitle();
         string GetVersion();
@@ -53,9 +53,21 @@ namespace Tangerine.BLL
 
         #region IManifestReader implementation
 
-        public string GetAppPlatformVersion()
+        public PlatformVersion GetAppPlatformVersion()
         {
-            return m_document.Root.Attribute(AppPlatformVersion).Value;
+            string version = m_document.Root.Attribute(AppPlatformVersion).Value;
+            if (version == "7.1")
+            {
+                return PlatformVersion.Version71;
+            }
+            else if (version == "8.0")
+            {
+                return PlatformVersion.Version80;
+            }
+            else
+            {
+                throw new InvalidOperationException(String.Format("Unknown platform version '{0}'.", version));
+            }
         }
 
         public string GetProductId()

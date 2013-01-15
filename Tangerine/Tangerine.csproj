@@ -77,6 +77,7 @@
     <Compile Include="BLL\Devices\DeviceType.cs" />
     <Compile Include="BLL\Devices\DeviceRetriever.cs" />
     <Compile Include="BLL\MethodDefinitionExtension.cs" />
+    <Compile Include="Common\PlatformVersion.cs" />
     <Compile Include="BLL\XAP\XAP.cs" />
     <Compile Include="BLL\XAP\XAPAssembly.cs" />
     <Compile Include="BLL\XAP\AssemblyPatcher.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="BLL\XAP\ManifestReader.cs" />
     <Compile Include="BLL\Devices\WPDevice.cs" />
     <Compile Include="BLL\Devices\WP7Device.cs" />
+    <Compile Include="Common\Util.cs" />
     <Compile Include="UI.BLL\AssemblyTree\MethodNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\PropertyNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\ToolTipProv.cs" />

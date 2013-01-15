@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Reflection;
+using Tangerine.Common;
 using Tangerine.Devices;
 
 namespace Tangerine.BLL.Devices
@@ -159,15 +160,15 @@ namespace Tangerine.BLL.Devices
         /// <exception cref="InvalidOperationException">If no Windows Phone device or emulator is registered.</exception>
         internal WPDevice GetDevice(DeviceType deviceType)
         {
-            SDKVersion sdkVersion;
+            PlatformVersion sdkVersion;
 
             if (IsWP8SDKInstalled)
             {
-                sdkVersion = SDKVersion.Version8;
+                sdkVersion = PlatformVersion.Version80;
             }
             else if (IsWP7SDKInstalled)
             {
-                sdkVersion = SDKVersion.Version7;
+                sdkVersion = PlatformVersion.Version71;
             }
             else
             {
@@ -185,7 +186,7 @@ namespace Tangerine.BLL.Devices
             }
         }
 
-        private WPDevice GetEmulator(object platform, SDKVersion sdkVersion)
+        private WPDevice GetEmulator(object platform, PlatformVersion sdkVersion)
         {
             var getDevicesMethod = platform.GetType().GetMethod("GetDevices", new Type[0]);
             var devices = (IEnumerable)getDevicesMethod.Invoke(platform, new object[0]);
@@ -211,16 +212,16 @@ namespace Tangerine.BLL.Devices
             return new WP7Device(emulator);
         }
 
-        private bool CheckEmulator(string name, SDKVersion sdkVersion)
+        private bool CheckEmulator(string name, PlatformVersion sdkVersion)
         {
             bool found = false;
 
             switch (sdkVersion)
             {
-                case SDKVersion.Version7:
+                case PlatformVersion.Version71:
                     found = (name == WP70EmulatorName) || name.StartsWith(WP71EmulatorName);
                     break;
-                case SDKVersion.Version8:
+                case PlatformVersion.Version80:
                     found = name.StartsWith(WP8EmulatorName);
                     break;
                 default:
@@ -230,7 +231,7 @@ namespace Tangerine.BLL.Devices
             return found;
         }
 
-        private WPDevice GetDevice(object platform, SDKVersion sdkVersion)
+        private WPDevice GetDevice(object platform, PlatformVersion sdkVersion)
         {
             var getDevicesMethod = platform.GetType().GetMethod("GetDevices", new Type[0]);
             var devices = (IEnumerable)getDevicesMethod.Invoke(platform, new object[0]);
@@ -256,16 +257,16 @@ namespace Tangerine.BLL.Devices
             return new WP7Device(device);
         }
 
-        private bool CheckDevice(string name, SDKVersion sdkVersion)
+        private bool CheckDevice(string name, PlatformVersion sdkVersion)
         {
             bool found = false;
 
             switch (sdkVersion)
             {
-                case SDKVersion.Version7:
+                case PlatformVersion.Version71:
                     found = (name == WP7DeviceName);
                     break;
-                case SDKVersion.Version8:
+                case PlatformVersion.Version80:
                     found = (name == WP8DeviceName);
                     break;
                 default:
@@ -273,13 +274,6 @@ namespace Tangerine.BLL.Devices
             }
 
             return found;
-        }
-
-
-        private enum SDKVersion
-        {
-            Version7,
-            Version8
         }
     }
 }

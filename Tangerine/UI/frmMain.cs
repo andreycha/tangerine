@@ -9,6 +9,7 @@ using Aga.Controls.Tree;
 using Microsoft.Win32;
 using Tangerine.BLL;
 using Tangerine.BLL.Hooks;
+using Tangerine.Common;
 using Tangerine.Devices;
 using Tangerine.UI.BLL;
 using Tangerine.UI.BLL.AssemblyTree;
@@ -122,7 +123,7 @@ namespace Tangerine.UI
             lblProductId.Text = "Product ID: " + manifest.ProductId;
             lblTitle.Text = "Title: " + manifest.Title;
             lblVersion.Text = "Version: " + manifest.Version;
-            lblPlatformVersion.Text = "Platform version: " + manifest.PlatformVersion;
+            lblPlatformVersion.Text = "Platform version: " + Util.GetEnumDescription(manifest.PlatformVersion);
             lblAuthor.Text = "Author: " + manifest.Author;
             tbxCapabilities.Clear();
             foreach (var capability in manifest.Capabilities)
