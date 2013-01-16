@@ -23,6 +23,7 @@ namespace Tangerine.BLL
             m_capabilities.Add(new Capability("ID_CAP_IDENTITY_USER", "Applications that use the anonymous LiveID to uniquely identify the user in an anonymous fashion."));
             m_capabilities.Add(new Capability("ID_CAP_ISV_CAMERA", "Applications that use the primary or front-facing camera."));
             m_capabilities.Add(new Capability("ID_CAP_LOCATION", "Applications with access to location services."));
+            m_capabilities.Add(new Capability("ID_CAP_MAP", "Provides access to mapping functionality."));
             m_capabilities.Add(new Capability("ID_CAP_MEDIALIB", "Applications that can access media library."));
             m_capabilities.Add(new Capability("ID_CAP_MICROPHONE", "Applications that use the microphone."));
             m_capabilities.Add(new Capability("ID_CAP_NETWORKING", "Applications with access to network services."));
