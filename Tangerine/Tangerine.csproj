@@ -87,6 +87,7 @@
     <Compile Include="BLL\XAP\FileInfoEventArgs.cs" />
     <Compile Include="BLL\XAP\ManifestReader.cs" />
     <Compile Include="BLL\Devices\WPDevice.cs" />
+    <Compile Include="Common\ScreenResolution.cs" />
     <Compile Include="Common\Util.cs" />
     <Compile Include="UI.BLL\AssemblyTree\MethodNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\PropertyNode.cs" />

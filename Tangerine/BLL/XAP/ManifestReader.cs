@@ -14,6 +14,8 @@ namespace Tangerine.BLL
         PlatformVersion PlatformVersion { get; }
         string Author { get; }
         IEnumerable<Capability> Capabilities { get; }
+        IEnumerable<Requirement> Requirements { get; }
+        IEnumerable<ScreenResolution> ScreenResolutions { get; }
     }
 
     internal interface IManifestReader
@@ -24,6 +26,8 @@ namespace Tangerine.BLL
         string GetVersion();
         string GetAuthor();
         IEnumerable<Capability> GetCapabilities();
+        IEnumerable<Requirement> GetRequirements();
+        IEnumerable<ScreenResolution> GetScreenResolutions();
     }
 
     internal class ManifestReader : IManifestReader
@@ -34,9 +38,11 @@ namespace Tangerine.BLL
         private const string ProductIdAttribute = "ProductID";
         private const string AuthorAttribute = "Author";
         private const string CapabilityTag = "Capability";
+        private const string RequirementTag = "Requirement";
         private const string NameAttribute = "Name";
         private const string DeploymentTag = "Deployment";
         private const string AppPlatformVersion = "AppPlatformVersion";
+        private const string ScreenResolutionTag = "ScreenResolution";
 
         private XDocument m_document;
         private XElement m_appElement;
@@ -94,6 +100,29 @@ namespace Tangerine.BLL
         {
             var capabilities = m_document.Descendants(CapabilityTag);
             return capabilities.Select(capability => Capability.GetCapability(capability.Attribute(NameAttribute).Value)).ToList();
+        }
+
+        public IEnumerable<Requirement> GetRequirements()
+        {
+            var requirements = m_document.Descendants(RequirementTag);
+            return requirements.Select(requirement => Requirement.GetRequirement(requirement.Attribute(NameAttribute).Value)).ToList();
+        }
+
+        public IEnumerable<ScreenResolution> GetScreenResolutions()
+        {
+            List<ScreenResolution> outputResolutions = new List<ScreenResolution>();
+            var resolutions = m_document.Descendants(ScreenResolutionTag).Select(resolution => resolution.Attribute(NameAttribute).Value).ToList();
+            foreach (var resolution in resolutions)
+            {
+                if (resolution == "ID_RESOLUTION_WVGA")
+                    outputResolutions.Add(ScreenResolution.WVGA);
+                else if (resolution == "ID_RESOLUTION_WXGA")
+                    outputResolutions.Add(ScreenResolution.WXGA);
+                else if (resolution == "ID_RESOLUTION_HD720P")
+                    outputResolutions.Add(ScreenResolution.HD720P);
+            }
+
+            return outputResolutions;
         }
 
         #endregion

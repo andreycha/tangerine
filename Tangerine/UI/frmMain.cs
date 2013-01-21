@@ -131,6 +131,10 @@ namespace Tangerine.UI
             {
                 tbxCapabilities.AppendText(capability.Id + ": " + capability.Description + "\r\n");
             }
+            foreach (var requirement in manifest.Requirements)
+            {
+                tbxRequirements.AppendText(string.Format("{0}: {1}\r\n", requirement.Id, requirement.Description));
+            }
         }
 
         public void SetExpanded(Node node)

@@ -49,14 +49,18 @@
             this.nodeIcon1 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon2 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon3 = new Aga.Controls.Tree.NodeControls.NodeIcon();
-            this.pnlCapabilities = new System.Windows.Forms.Panel();
-            this.tbxCapabilities = new System.Windows.Forms.TextBox();
+            this.tabXapFileInformation = new System.Windows.Forms.TabControl();
+            this.tabGeneralInfo = new System.Windows.Forms.TabPage();
             this.lblPlatformVersion = new System.Windows.Forms.Label();
-            this.lblCapabilities = new System.Windows.Forms.Label();
             this.lblAuthor = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblTitle = new System.Windows.Forms.Label();
             this.lblProductId = new System.Windows.Forms.Label();
+            this.tabCapabilities = new System.Windows.Forms.TabPage();
+            this.pnlCapabilities = new System.Windows.Forms.Panel();
+            this.tbxCapabilities = new System.Windows.Forms.TextBox();
+            this.tabRequirements = new System.Windows.Forms.TabPage();
+            this.tbxRequirements = new System.Windows.Forms.TextBox();
             this.tabDynamic = new System.Windows.Forms.TabPage();
             this.chbLogReturnValues = new System.Windows.Forms.CheckBox();
             this.chbLogParameters = new System.Windows.Forms.CheckBox();
@@ -69,6 +73,7 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
+            this.lblScreenResolutions = new System.Windows.Forms.Label();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -77,7 +82,11 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            this.tabXapFileInformation.SuspendLayout();
+            this.tabGeneralInfo.SuspendLayout();
+            this.tabCapabilities.SuspendLayout();
             this.pnlCapabilities.SuspendLayout();
+            this.tabRequirements.SuspendLayout();
             this.tabDynamic.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -224,13 +233,7 @@
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.Controls.Add(this.pnlCapabilities);
-            this.splitContainer.Panel2.Controls.Add(this.lblPlatformVersion);
-            this.splitContainer.Panel2.Controls.Add(this.lblCapabilities);
-            this.splitContainer.Panel2.Controls.Add(this.lblAuthor);
-            this.splitContainer.Panel2.Controls.Add(this.lblVersion);
-            this.splitContainer.Panel2.Controls.Add(this.lblTitle);
-            this.splitContainer.Panel2.Controls.Add(this.lblProductId);
+            this.splitContainer.Panel2.Controls.Add(this.tabXapFileInformation);
             this.splitContainer.Size = new System.Drawing.Size(870, 467);
             this.splitContainer.SplitterDistance = 338;
             this.splitContainer.TabIndex = 0;
@@ -276,17 +279,104 @@
             // 
             this.nodeIcon3.DataPropertyName = "SecurityIcon";
             // 
+            // tabXapFileInformation
+            // 
+            this.tabXapFileInformation.Controls.Add(this.tabGeneralInfo);
+            this.tabXapFileInformation.Controls.Add(this.tabCapabilities);
+            this.tabXapFileInformation.Controls.Add(this.tabRequirements);
+            this.tabXapFileInformation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabXapFileInformation.Location = new System.Drawing.Point(0, 0);
+            this.tabXapFileInformation.Name = "tabXapFileInformation";
+            this.tabXapFileInformation.SelectedIndex = 0;
+            this.tabXapFileInformation.Size = new System.Drawing.Size(528, 467);
+            this.tabXapFileInformation.TabIndex = 0;
+            // 
+            // tabGeneralInfo
+            // 
+            this.tabGeneralInfo.Controls.Add(this.lblScreenResolutions);
+            this.tabGeneralInfo.Controls.Add(this.lblPlatformVersion);
+            this.tabGeneralInfo.Controls.Add(this.lblAuthor);
+            this.tabGeneralInfo.Controls.Add(this.lblVersion);
+            this.tabGeneralInfo.Controls.Add(this.lblTitle);
+            this.tabGeneralInfo.Controls.Add(this.lblProductId);
+            this.tabGeneralInfo.Location = new System.Drawing.Point(4, 22);
+            this.tabGeneralInfo.Name = "tabGeneralInfo";
+            this.tabGeneralInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGeneralInfo.Size = new System.Drawing.Size(520, 441);
+            this.tabGeneralInfo.TabIndex = 0;
+            this.tabGeneralInfo.Text = "General information";
+            this.tabGeneralInfo.UseVisualStyleBackColor = true;
+            // 
+            // lblPlatformVersion
+            // 
+            this.lblPlatformVersion.AutoSize = true;
+            this.lblPlatformVersion.Location = new System.Drawing.Point(5, 98);
+            this.lblPlatformVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblPlatformVersion.Name = "lblPlatformVersion";
+            this.lblPlatformVersion.Size = new System.Drawing.Size(85, 13);
+            this.lblPlatformVersion.TabIndex = 12;
+            this.lblPlatformVersion.Text = "Platform version:";
+            // 
+            // lblAuthor
+            // 
+            this.lblAuthor.AutoSize = true;
+            this.lblAuthor.Location = new System.Drawing.Point(5, 126);
+            this.lblAuthor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblAuthor.Name = "lblAuthor";
+            this.lblAuthor.Size = new System.Drawing.Size(41, 13);
+            this.lblAuthor.TabIndex = 11;
+            this.lblAuthor.Text = "Author:";
+            // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(5, 69);
+            this.lblVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(45, 13);
+            this.lblVersion.TabIndex = 10;
+            this.lblVersion.Text = "Version:";
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Location = new System.Drawing.Point(5, 40);
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(30, 13);
+            this.lblTitle.TabIndex = 9;
+            this.lblTitle.Text = "Title:";
+            // 
+            // lblProductId
+            // 
+            this.lblProductId.AutoSize = true;
+            this.lblProductId.Location = new System.Drawing.Point(5, 13);
+            this.lblProductId.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblProductId.Name = "lblProductId";
+            this.lblProductId.Size = new System.Drawing.Size(61, 13);
+            this.lblProductId.TabIndex = 8;
+            this.lblProductId.Text = "Product ID:";
+            // 
+            // tabCapabilities
+            // 
+            this.tabCapabilities.Controls.Add(this.pnlCapabilities);
+            this.tabCapabilities.Location = new System.Drawing.Point(4, 22);
+            this.tabCapabilities.Name = "tabCapabilities";
+            this.tabCapabilities.Padding = new System.Windows.Forms.Padding(3);
+            this.tabCapabilities.Size = new System.Drawing.Size(520, 441);
+            this.tabCapabilities.TabIndex = 1;
+            this.tabCapabilities.Text = "Capabilities";
+            this.tabCapabilities.UseVisualStyleBackColor = true;
+            // 
             // pnlCapabilities
             // 
-            this.pnlCapabilities.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlCapabilities.Controls.Add(this.tbxCapabilities);
-            this.pnlCapabilities.Location = new System.Drawing.Point(15, 174);
+            this.pnlCapabilities.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlCapabilities.Location = new System.Drawing.Point(3, 3);
             this.pnlCapabilities.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCapabilities.Name = "pnlCapabilities";
-            this.pnlCapabilities.Size = new System.Drawing.Size(509, 289);
-            this.pnlCapabilities.TabIndex = 7;
+            this.pnlCapabilities.Size = new System.Drawing.Size(514, 435);
+            this.pnlCapabilities.TabIndex = 15;
             // 
             // tbxCapabilities
             // 
@@ -300,68 +390,31 @@
             this.tbxCapabilities.ReadOnly = true;
             this.tbxCapabilities.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxCapabilities.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbxCapabilities.Size = new System.Drawing.Size(509, 289);
+            this.tbxCapabilities.Size = new System.Drawing.Size(514, 435);
             this.tbxCapabilities.TabIndex = 15;
             // 
-            // lblPlatformVersion
+            // tabRequirements
             // 
-            this.lblPlatformVersion.AutoSize = true;
-            this.lblPlatformVersion.Location = new System.Drawing.Point(12, 103);
-            this.lblPlatformVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblPlatformVersion.Name = "lblPlatformVersion";
-            this.lblPlatformVersion.Size = new System.Drawing.Size(85, 13);
-            this.lblPlatformVersion.TabIndex = 5;
-            this.lblPlatformVersion.Text = "Platform version:";
+            this.tabRequirements.Controls.Add(this.tbxRequirements);
+            this.tabRequirements.Location = new System.Drawing.Point(4, 22);
+            this.tabRequirements.Name = "tabRequirements";
+            this.tabRequirements.Size = new System.Drawing.Size(520, 441);
+            this.tabRequirements.TabIndex = 2;
+            this.tabRequirements.Text = "Requirements";
+            this.tabRequirements.UseVisualStyleBackColor = true;
             // 
-            // lblCapabilities
+            // tbxRequirements
             // 
-            this.lblCapabilities.AutoSize = true;
-            this.lblCapabilities.Location = new System.Drawing.Point(12, 159);
-            this.lblCapabilities.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblCapabilities.Name = "lblCapabilities";
-            this.lblCapabilities.Size = new System.Drawing.Size(63, 13);
-            this.lblCapabilities.TabIndex = 5;
-            this.lblCapabilities.Text = "Capabilities:";
-            // 
-            // lblAuthor
-            // 
-            this.lblAuthor.AutoSize = true;
-            this.lblAuthor.Location = new System.Drawing.Point(12, 131);
-            this.lblAuthor.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblAuthor.Name = "lblAuthor";
-            this.lblAuthor.Size = new System.Drawing.Size(41, 13);
-            this.lblAuthor.TabIndex = 3;
-            this.lblAuthor.Text = "Author:";
-            // 
-            // lblVersion
-            // 
-            this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(12, 74);
-            this.lblVersion.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(45, 13);
-            this.lblVersion.TabIndex = 2;
-            this.lblVersion.Text = "Version:";
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Location = new System.Drawing.Point(12, 45);
-            this.lblTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(30, 13);
-            this.lblTitle.TabIndex = 1;
-            this.lblTitle.Text = "Title:";
-            // 
-            // lblProductId
-            // 
-            this.lblProductId.AutoSize = true;
-            this.lblProductId.Location = new System.Drawing.Point(12, 18);
-            this.lblProductId.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblProductId.Name = "lblProductId";
-            this.lblProductId.Size = new System.Drawing.Size(61, 13);
-            this.lblProductId.TabIndex = 0;
-            this.lblProductId.Text = "Product ID:";
+            this.tbxRequirements.BackColor = System.Drawing.SystemColors.Window;
+            this.tbxRequirements.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbxRequirements.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbxRequirements.Location = new System.Drawing.Point(0, 0);
+            this.tbxRequirements.Multiline = true;
+            this.tbxRequirements.Name = "tbxRequirements";
+            this.tbxRequirements.ReadOnly = true;
+            this.tbxRequirements.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbxRequirements.Size = new System.Drawing.Size(520, 441);
+            this.tbxRequirements.TabIndex = 0;
             // 
             // tabDynamic
             // 
@@ -524,6 +577,15 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
+            // lblScreenResolutions
+            // 
+            this.lblScreenResolutions.AutoSize = true;
+            this.lblScreenResolutions.Location = new System.Drawing.Point(5, 155);
+            this.lblScreenResolutions.Name = "lblScreenResolutions";
+            this.lblScreenResolutions.Size = new System.Drawing.Size(102, 13);
+            this.lblScreenResolutions.TabIndex = 13;
+            this.lblScreenResolutions.Text = "Screen Resolutions:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -551,11 +613,16 @@
             this.tabStatic.ResumeLayout(false);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
-            this.splitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
+            this.tabXapFileInformation.ResumeLayout(false);
+            this.tabGeneralInfo.ResumeLayout(false);
+            this.tabGeneralInfo.PerformLayout();
+            this.tabCapabilities.ResumeLayout(false);
             this.pnlCapabilities.ResumeLayout(false);
             this.pnlCapabilities.PerformLayout();
+            this.tabRequirements.ResumeLayout(false);
+            this.tabRequirements.PerformLayout();
             this.tabDynamic.ResumeLayout(false);
             this.tabDynamic.PerformLayout();
             this.ResumeLayout(false);
@@ -588,13 +655,6 @@
         private System.Windows.Forms.CheckBox chbLogParameters;
         private System.Windows.Forms.CheckBox chbLogMethods;
         private System.Windows.Forms.Button btnAddHook;
-        private System.Windows.Forms.Label lblCapabilities;
-        private System.Windows.Forms.Label lblAuthor;
-        private System.Windows.Forms.Label lblVersion;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Label lblProductId;
-        private System.Windows.Forms.Panel pnlCapabilities;
-        private System.Windows.Forms.TextBox tbxCapabilities;
         private Aga.Controls.Tree.TreeViewAdv trvAssemblies;
         private Aga.Controls.Tree.NodeControls.NodeTextBox nodeTextBox1;
         private Aga.Controls.Tree.NodeControls.NodeIcon nodeIcon1;
@@ -604,7 +664,19 @@
         private System.Windows.Forms.Button btnBrowseFolder;
         private System.Windows.Forms.CheckBox chbLogReturnValues;
         private Aga.Controls.Tree.NodeControls.NodeIcon nodeIcon4;
+        private System.Windows.Forms.TabControl tabXapFileInformation;
+        private System.Windows.Forms.TabPage tabGeneralInfo;
         private System.Windows.Forms.Label lblPlatformVersion;
+        private System.Windows.Forms.Label lblAuthor;
+        private System.Windows.Forms.Label lblVersion;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label lblProductId;
+        private System.Windows.Forms.TabPage tabCapabilities;
+        private System.Windows.Forms.Panel pnlCapabilities;
+        private System.Windows.Forms.TextBox tbxCapabilities;
+        private System.Windows.Forms.TabPage tabRequirements;
+        private System.Windows.Forms.TextBox tbxRequirements;
+        private System.Windows.Forms.Label lblScreenResolutions;
 
     }
 }

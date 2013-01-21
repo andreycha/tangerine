@@ -44,6 +44,10 @@ namespace Tangerine.BLL
 
         public IEnumerable<Capability> Capabilities { get; private set; }
 
+        public IEnumerable<Requirement> Requirements { get; private set; }
+
+        public IEnumerable<ScreenResolution> ScreenResolutions { get; private set; }
+
         public IEnumerable<XAPAssembly> Assemblies 
         {
             get { return m_xapAssemblies.Values; }
@@ -136,7 +140,9 @@ namespace Tangerine.BLL
             Version = reader.GetVersion();
             Author = reader.GetAuthor();
             Capabilities = reader.GetCapabilities();
+            Requirements = reader.GetRequirements();
             PlatformVersion = reader.GetAppPlatformVersion();
+            ScreenResolutions = reader.GetScreenResolutions();
         }
 
         private string UnZip(string filePath)
