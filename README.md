@@ -8,12 +8,13 @@ Tngerine is a tool for inspecting Windows Phone applications. Based on [XAPSpy](
  - Run your own code on method enter, on method exit or instead of a method
  - Change parameters values using method code
 
+Supports both Windows Phone 7 and Windows Phone 8 applications.
+
 Current limitations on functions for instrumentating:
+ - only managed application assemblies get instrumented
  - does not support functions with user types (e.g. custom type Product)
  - does not support out parameters
  - does not support method overloads
-
-Currently supports Windows Phone 7 applications only. Support for Windows Phone 8 applications is coming soon!
 
 Minimum requirements: .NET Framework 4.0, Windows Phone SDK 7.0
 
