@@ -48,6 +48,10 @@ namespace Tangerine.BLL
 
         public IEnumerable<ScreenResolution> ScreenResolutions { get; private set; }
 
+        public IEnumerable<string> SupportedFileTypes { get; private set; }
+
+        public IEnumerable<string> AssociatedURIs { get; private set; }
+
         public IEnumerable<XAPAssembly> Assemblies 
         {
             get { return m_xapAssemblies.Values; }
@@ -143,6 +147,8 @@ namespace Tangerine.BLL
             Requirements = reader.GetRequirements();
             PlatformVersion = reader.GetAppPlatformVersion();
             ScreenResolutions = reader.GetScreenResolutions();
+            SupportedFileTypes = reader.GetSupportedFileTypes();
+            AssociatedURIs = reader.GetAssociatedURIs();
         }
 
         private string UnZip(string filePath)

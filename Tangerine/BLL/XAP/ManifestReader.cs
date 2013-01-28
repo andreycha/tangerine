@@ -16,6 +16,8 @@ namespace Tangerine.BLL
         IEnumerable<Capability> Capabilities { get; }
         IEnumerable<Requirement> Requirements { get; }
         IEnumerable<ScreenResolution> ScreenResolutions { get; }
+        IEnumerable<string> SupportedFileTypes { get; }
+        IEnumerable<string> AssociatedURIs { get; }
     }
 
     internal interface IManifestReader
@@ -28,6 +30,8 @@ namespace Tangerine.BLL
         IEnumerable<Capability> GetCapabilities();
         IEnumerable<Requirement> GetRequirements();
         IEnumerable<ScreenResolution> GetScreenResolutions();
+        IEnumerable<string> GetSupportedFileTypes();
+        IEnumerable<string> GetAssociatedURIs();
     }
 
     internal class ManifestReader : IManifestReader
@@ -43,6 +47,8 @@ namespace Tangerine.BLL
         private const string DeploymentTag = "Deployment";
         private const string AppPlatformVersion = "AppPlatformVersion";
         private const string ScreenResolutionTag = "ScreenResolution";
+        private const string FileTypeTag = "FileType";
+        private const string ProtocolTag = "Protocol";
 
         private XDocument m_document;
         private XElement m_appElement;
@@ -123,6 +129,16 @@ namespace Tangerine.BLL
             }
 
             return outputResolutions;
+        }
+
+        public IEnumerable<string> GetSupportedFileTypes()
+        {
+            return m_document.Descendants(FileTypeTag).Select(filetype => filetype.Value);
+        }
+
+        public IEnumerable<string> GetAssociatedURIs()
+        {
+            return m_document.Descendants(ProtocolTag).Select(protocol => protocol.Attribute(NameAttribute).Value);
         }
 
         #endregion

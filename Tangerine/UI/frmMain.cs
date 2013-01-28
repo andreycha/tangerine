@@ -32,6 +32,8 @@ namespace Tangerine.UI
 
             InitializeDeployContextMenu();
 
+            HideExcessTabs();
+
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
             m_presenter = new MainPresenter(this);
@@ -129,6 +131,8 @@ namespace Tangerine.UI
             tbxCapabilities.Clear();
             tbxRequirements.Clear();
             tbxScreenResolutions.Clear();
+            tbxFileTypes.Clear();
+            tbxURIs.Clear();
             foreach (var capability in manifest.Capabilities)
             {
                 tbxCapabilities.AppendText(capability.Id + ": " + capability.Description + "\r\n");
@@ -141,6 +145,34 @@ namespace Tangerine.UI
             {
                 tbxScreenResolutions.AppendText(string.Format("{0}: {1}\r\n", screenResolution.ToString(), Util.GetEnumDescription(screenResolution)));
             }
+            if (manifest.PlatformVersion != PlatformVersion.Version71)
+            {
+                ShowExcessTabs();
+                foreach (var fileType in manifest.SupportedFileTypes)
+                {
+                    tbxFileTypes.AppendText(fileType + "\r\n");
+                }
+                foreach (var uri in manifest.AssociatedURIs)
+                {
+                    tbxURIs.AppendText(uri + "\r\n");
+                }
+            }
+            else
+            {
+                HideExcessTabs();
+            }
+        }
+
+        void HideExcessTabs()
+        {
+            if (tabXapFileInformation.TabPages.Contains(tabOther))
+                tabXapFileInformation.TabPages.Remove(tabOther);
+        }
+
+        void ShowExcessTabs()
+        {
+            if (!tabXapFileInformation.TabPages.Contains(tabOther))
+                tabXapFileInformation.TabPages.Add(tabOther);
         }
 
         public void SetExpanded(Node node)

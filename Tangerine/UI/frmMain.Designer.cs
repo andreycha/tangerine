@@ -77,6 +77,13 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
+            this.tabOther = new System.Windows.Forms.TabPage();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbxFileTypes = new System.Windows.Forms.TextBox();
+            this.pnlFileTypes = new System.Windows.Forms.Panel();
+            this.pnlURIs = new System.Windows.Forms.Panel();
+            this.tbxURIs = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -93,6 +100,9 @@
             this.tabRequirements.SuspendLayout();
             this.pnlRequirements.SuspendLayout();
             this.tabDynamic.SuspendLayout();
+            this.tabOther.SuspendLayout();
+            this.pnlFileTypes.SuspendLayout();
+            this.pnlURIs.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -289,6 +299,7 @@
             this.tabXapFileInformation.Controls.Add(this.tabGeneralInfo);
             this.tabXapFileInformation.Controls.Add(this.tabCapabilities);
             this.tabXapFileInformation.Controls.Add(this.tabRequirements);
+            this.tabXapFileInformation.Controls.Add(this.tabOther);
             this.tabXapFileInformation.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabXapFileInformation.Location = new System.Drawing.Point(0, 0);
             this.tabXapFileInformation.Name = "tabXapFileInformation";
@@ -624,6 +635,79 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
+            // tabOther
+            // 
+            this.tabOther.Controls.Add(this.label2);
+            this.tabOther.Controls.Add(this.pnlURIs);
+            this.tabOther.Controls.Add(this.pnlFileTypes);
+            this.tabOther.Controls.Add(this.label1);
+            this.tabOther.Location = new System.Drawing.Point(4, 22);
+            this.tabOther.Name = "tabOther";
+            this.tabOther.Size = new System.Drawing.Size(520, 441);
+            this.tabOther.TabIndex = 3;
+            this.tabOther.Text = "Other";
+            this.tabOther.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 13);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Registered File Types:";
+            // 
+            // tbxFileTypes
+            // 
+            this.tbxFileTypes.BackColor = System.Drawing.SystemColors.Window;
+            this.tbxFileTypes.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbxFileTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbxFileTypes.Location = new System.Drawing.Point(0, 0);
+            this.tbxFileTypes.Multiline = true;
+            this.tbxFileTypes.Name = "tbxFileTypes";
+            this.tbxFileTypes.ReadOnly = true;
+            this.tbxFileTypes.Size = new System.Drawing.Size(509, 103);
+            this.tbxFileTypes.TabIndex = 10;
+            // 
+            // pnlFileTypes
+            // 
+            this.pnlFileTypes.Controls.Add(this.tbxFileTypes);
+            this.pnlFileTypes.Location = new System.Drawing.Point(8, 29);
+            this.pnlFileTypes.Name = "pnlFileTypes";
+            this.pnlFileTypes.Size = new System.Drawing.Size(509, 103);
+            this.pnlFileTypes.TabIndex = 11;
+            // 
+            // pnlURIs
+            // 
+            this.pnlURIs.Controls.Add(this.tbxURIs);
+            this.pnlURIs.Location = new System.Drawing.Point(8, 163);
+            this.pnlURIs.Name = "pnlURIs";
+            this.pnlURIs.Size = new System.Drawing.Size(509, 103);
+            this.pnlURIs.TabIndex = 12;
+            // 
+            // tbxURIs
+            // 
+            this.tbxURIs.BackColor = System.Drawing.SystemColors.Window;
+            this.tbxURIs.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbxURIs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tbxURIs.Location = new System.Drawing.Point(0, 0);
+            this.tbxURIs.Multiline = true;
+            this.tbxURIs.Name = "tbxURIs";
+            this.tbxURIs.ReadOnly = true;
+            this.tbxURIs.Size = new System.Drawing.Size(509, 103);
+            this.tbxURIs.TabIndex = 10;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(5, 147);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(89, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Associated URIs:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -666,6 +750,12 @@
             this.pnlRequirements.PerformLayout();
             this.tabDynamic.ResumeLayout(false);
             this.tabDynamic.PerformLayout();
+            this.tabOther.ResumeLayout(false);
+            this.tabOther.PerformLayout();
+            this.pnlFileTypes.ResumeLayout(false);
+            this.pnlFileTypes.PerformLayout();
+            this.pnlURIs.ResumeLayout(false);
+            this.pnlURIs.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -721,6 +811,13 @@
         private System.Windows.Forms.TextBox tbxCapabilities;
         private System.Windows.Forms.TextBox tbxRequirements;
         private System.Windows.Forms.TextBox tbxScreenResolutions;
+        private System.Windows.Forms.TabPage tabOther;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbxFileTypes;
+        private System.Windows.Forms.Panel pnlFileTypes;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel pnlURIs;
+        private System.Windows.Forms.TextBox tbxURIs;
 
     }
 }
