@@ -127,6 +127,8 @@ namespace Tangerine.UI
             lblPlatformVersion.Text = "Platform version: " + Util.GetEnumDescription(manifest.PlatformVersion);
             lblAuthor.Text = "Author: " + manifest.Author;
             tbxCapabilities.Clear();
+            tbxRequirements.Clear();
+            tbxScreenResolutions.Clear();
             foreach (var capability in manifest.Capabilities)
             {
                 tbxCapabilities.AppendText(capability.Id + ": " + capability.Description + "\r\n");
@@ -134,6 +136,10 @@ namespace Tangerine.UI
             foreach (var requirement in manifest.Requirements)
             {
                 tbxRequirements.AppendText(string.Format("{0}: {1}\r\n", requirement.Id, requirement.Description));
+            }
+            foreach (var screenResolution in manifest.ScreenResolutions)
+            {
+                tbxScreenResolutions.AppendText(string.Format("{0}: {1}\r\n", screenResolution.ToString(), Util.GetEnumDescription(screenResolution)));
             }
         }
 

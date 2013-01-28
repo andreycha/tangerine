@@ -51,6 +51,9 @@
             this.nodeIcon3 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.tabXapFileInformation = new System.Windows.Forms.TabControl();
             this.tabGeneralInfo = new System.Windows.Forms.TabPage();
+            this.pnlScreenResolutions = new System.Windows.Forms.Panel();
+            this.tbxScreenResolutions = new System.Windows.Forms.TextBox();
+            this.lblScreenResolutions = new System.Windows.Forms.Label();
             this.lblPlatformVersion = new System.Windows.Forms.Label();
             this.lblAuthor = new System.Windows.Forms.Label();
             this.lblVersion = new System.Windows.Forms.Label();
@@ -60,6 +63,7 @@
             this.pnlCapabilities = new System.Windows.Forms.Panel();
             this.tbxCapabilities = new System.Windows.Forms.TextBox();
             this.tabRequirements = new System.Windows.Forms.TabPage();
+            this.pnlRequirements = new System.Windows.Forms.Panel();
             this.tbxRequirements = new System.Windows.Forms.TextBox();
             this.tabDynamic = new System.Windows.Forms.TabPage();
             this.chbLogReturnValues = new System.Windows.Forms.CheckBox();
@@ -73,7 +77,6 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
-            this.lblScreenResolutions = new System.Windows.Forms.Label();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -84,9 +87,11 @@
             this.splitContainer.SuspendLayout();
             this.tabXapFileInformation.SuspendLayout();
             this.tabGeneralInfo.SuspendLayout();
+            this.pnlScreenResolutions.SuspendLayout();
             this.tabCapabilities.SuspendLayout();
             this.pnlCapabilities.SuspendLayout();
             this.tabRequirements.SuspendLayout();
+            this.pnlRequirements.SuspendLayout();
             this.tabDynamic.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -293,6 +298,7 @@
             // 
             // tabGeneralInfo
             // 
+            this.tabGeneralInfo.Controls.Add(this.pnlScreenResolutions);
             this.tabGeneralInfo.Controls.Add(this.lblScreenResolutions);
             this.tabGeneralInfo.Controls.Add(this.lblPlatformVersion);
             this.tabGeneralInfo.Controls.Add(this.lblAuthor);
@@ -306,6 +312,35 @@
             this.tabGeneralInfo.TabIndex = 0;
             this.tabGeneralInfo.Text = "General information";
             this.tabGeneralInfo.UseVisualStyleBackColor = true;
+            // 
+            // pnlScreenResolutions
+            // 
+            this.pnlScreenResolutions.AutoSize = true;
+            this.pnlScreenResolutions.Controls.Add(this.tbxScreenResolutions);
+            this.pnlScreenResolutions.Location = new System.Drawing.Point(8, 171);
+            this.pnlScreenResolutions.Name = "pnlScreenResolutions";
+            this.pnlScreenResolutions.Size = new System.Drawing.Size(509, 103);
+            this.pnlScreenResolutions.TabIndex = 14;
+            // 
+            // tbxScreenResolutions
+            // 
+            this.tbxScreenResolutions.BackColor = System.Drawing.SystemColors.Window;
+            this.tbxScreenResolutions.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbxScreenResolutions.Location = new System.Drawing.Point(0, 0);
+            this.tbxScreenResolutions.Multiline = true;
+            this.tbxScreenResolutions.Name = "tbxScreenResolutions";
+            this.tbxScreenResolutions.ReadOnly = true;
+            this.tbxScreenResolutions.Size = new System.Drawing.Size(506, 100);
+            this.tbxScreenResolutions.TabIndex = 0;
+            // 
+            // lblScreenResolutions
+            // 
+            this.lblScreenResolutions.AutoSize = true;
+            this.lblScreenResolutions.Location = new System.Drawing.Point(5, 155);
+            this.lblScreenResolutions.Name = "lblScreenResolutions";
+            this.lblScreenResolutions.Size = new System.Drawing.Size(102, 13);
+            this.lblScreenResolutions.TabIndex = 13;
+            this.lblScreenResolutions.Text = "Screen Resolutions:";
             // 
             // lblPlatformVersion
             // 
@@ -391,17 +426,28 @@
             this.tbxCapabilities.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxCapabilities.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbxCapabilities.Size = new System.Drawing.Size(514, 435);
-            this.tbxCapabilities.TabIndex = 15;
+            this.tbxCapabilities.TabIndex = 16;
             // 
             // tabRequirements
             // 
-            this.tabRequirements.Controls.Add(this.tbxRequirements);
+            this.tabRequirements.Controls.Add(this.pnlRequirements);
             this.tabRequirements.Location = new System.Drawing.Point(4, 22);
             this.tabRequirements.Name = "tabRequirements";
+            this.tabRequirements.Padding = new System.Windows.Forms.Padding(3);
             this.tabRequirements.Size = new System.Drawing.Size(520, 441);
             this.tabRequirements.TabIndex = 2;
             this.tabRequirements.Text = "Requirements";
             this.tabRequirements.UseVisualStyleBackColor = true;
+            // 
+            // pnlRequirements
+            // 
+            this.pnlRequirements.Controls.Add(this.tbxRequirements);
+            this.pnlRequirements.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlRequirements.Location = new System.Drawing.Point(3, 3);
+            this.pnlRequirements.Margin = new System.Windows.Forms.Padding(2);
+            this.pnlRequirements.Name = "pnlRequirements";
+            this.pnlRequirements.Size = new System.Drawing.Size(514, 435);
+            this.pnlRequirements.TabIndex = 0;
             // 
             // tbxRequirements
             // 
@@ -409,12 +455,13 @@
             this.tbxRequirements.Cursor = System.Windows.Forms.Cursors.Default;
             this.tbxRequirements.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tbxRequirements.Location = new System.Drawing.Point(0, 0);
+            this.tbxRequirements.Margin = new System.Windows.Forms.Padding(2);
             this.tbxRequirements.Multiline = true;
             this.tbxRequirements.Name = "tbxRequirements";
             this.tbxRequirements.ReadOnly = true;
             this.tbxRequirements.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbxRequirements.Size = new System.Drawing.Size(520, 441);
-            this.tbxRequirements.TabIndex = 0;
+            this.tbxRequirements.Size = new System.Drawing.Size(514, 435);
+            this.tbxRequirements.TabIndex = 3;
             // 
             // tabDynamic
             // 
@@ -577,15 +624,6 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
-            // lblScreenResolutions
-            // 
-            this.lblScreenResolutions.AutoSize = true;
-            this.lblScreenResolutions.Location = new System.Drawing.Point(5, 155);
-            this.lblScreenResolutions.Name = "lblScreenResolutions";
-            this.lblScreenResolutions.Size = new System.Drawing.Size(102, 13);
-            this.lblScreenResolutions.TabIndex = 13;
-            this.lblScreenResolutions.Text = "Screen Resolutions:";
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -618,11 +656,14 @@
             this.tabXapFileInformation.ResumeLayout(false);
             this.tabGeneralInfo.ResumeLayout(false);
             this.tabGeneralInfo.PerformLayout();
+            this.pnlScreenResolutions.ResumeLayout(false);
+            this.pnlScreenResolutions.PerformLayout();
             this.tabCapabilities.ResumeLayout(false);
             this.pnlCapabilities.ResumeLayout(false);
             this.pnlCapabilities.PerformLayout();
             this.tabRequirements.ResumeLayout(false);
-            this.tabRequirements.PerformLayout();
+            this.pnlRequirements.ResumeLayout(false);
+            this.pnlRequirements.PerformLayout();
             this.tabDynamic.ResumeLayout(false);
             this.tabDynamic.PerformLayout();
             this.ResumeLayout(false);
@@ -673,10 +714,13 @@
         private System.Windows.Forms.Label lblProductId;
         private System.Windows.Forms.TabPage tabCapabilities;
         private System.Windows.Forms.Panel pnlCapabilities;
-        private System.Windows.Forms.TextBox tbxCapabilities;
         private System.Windows.Forms.TabPage tabRequirements;
-        private System.Windows.Forms.TextBox tbxRequirements;
         private System.Windows.Forms.Label lblScreenResolutions;
+        private System.Windows.Forms.Panel pnlScreenResolutions;
+        private System.Windows.Forms.Panel pnlRequirements;
+        private System.Windows.Forms.TextBox tbxCapabilities;
+        private System.Windows.Forms.TextBox tbxRequirements;
+        private System.Windows.Forms.TextBox tbxScreenResolutions;
 
     }
 }
