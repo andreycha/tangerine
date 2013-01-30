@@ -165,14 +165,14 @@ namespace Tangerine.UI
 
         void HideExcessTabs()
         {
-            if (tabXapFileInformation.TabPages.Contains(tabOther))
-                tabXapFileInformation.TabPages.Remove(tabOther);
+            if (tabXapFileInformation.TabPages.Contains(tabAssociations))
+                tabXapFileInformation.TabPages.Remove(tabAssociations);
         }
 
         void ShowExcessTabs()
         {
-            if (!tabXapFileInformation.TabPages.Contains(tabOther))
-                tabXapFileInformation.TabPages.Add(tabOther);
+            if (!tabXapFileInformation.TabPages.Contains(tabAssociations))
+                tabXapFileInformation.TabPages.Add(tabAssociations);
         }
 
         public void SetExpanded(Node node)
