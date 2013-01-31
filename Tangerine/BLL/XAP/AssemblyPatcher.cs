@@ -144,136 +144,120 @@ namespace Tangerine.BLL
             m_codeGenerator.GenerateAssembly(methodHook, Path.GetDirectoryName(m_assemblyPath));
 
             // load generated assembly
-            string name = methodHook.GetSafeName();
-            string generatedAssemblyName = String.Format("{0}.dll", name);
-            string generatedAssemblyPath = Path.Combine(Path.GetDirectoryName(m_assemblyPath), generatedAssemblyName);
-            var genAsm = AssemblyFactory.GetAssembly(generatedAssemblyPath);
+            string assemblyName = methodHook.GetSafeName();
+            AssemblyDefinition generatedAssembly = LoadGeneratedAssembly(assemblyName);
 
             // get method reference with custom code
-            string generatedClassName = String.Format("{0}_{1}", name, "Class");
-            var genType = genAsm.MainModule.Types.Cast<TypeDefinition>().First(t => t.Name == generatedClassName);
-            string generatedMethodName = String.Format("{0}_{1}", name, "Hook");
+            string generatedClassName = String.Format("{0}_{1}", assemblyName, "Class");
+            var generatedType = generatedAssembly.MainModule.Types.Cast<TypeDefinition>().First(t => t.Name == generatedClassName);
+            string generatedMethodName = String.Format("{0}_{1}", assemblyName, "Hook");
             // TODO: take parameter types into account, to resolve methods with the same names
-            var genMet = genType.Methods.Cast<MethodDefinition>().First(m => m.Name == generatedMethodName);
-            MethodReference genTypeCtor = null;
-            for (int i = 0; i <= genType.Constructors.Count; i++)
+            var generatedMethod = generatedType.Methods.Cast<MethodDefinition>().First(m => m.Name == generatedMethodName);
+            MethodReference generatedTypeCtor = null;
+            for (int i = 0; i <= generatedType.Constructors.Count; i++)
             {
-                if (!genType.Constructors[i].HasParameters)
+                if (!generatedType.Constructors[i].HasParameters)
                 {
-                    genTypeCtor = genType.Constructors[i];
+                    generatedTypeCtor = generatedType.Constructors[i];
                     break;
                 }
             }
-            if (genTypeCtor == null)
+            if (generatedTypeCtor == null)
             {
                 throw new InvalidOperationException("Default constructor was on found on generated assembly");
             }
 
             // inject call
-            MethodReference generatedTypeCtorRef = m_assemblyDefinition.MainModule.Import(genTypeCtor);
-            MethodReference generatedMethodRef = m_assemblyDefinition.MainModule.Import(genMet);
+            MethodReference generatedTypeCtorRef = m_assemblyDefinition.MainModule.Import(generatedTypeCtor);
+            MethodReference generatedMethodRef = m_assemblyDefinition.MainModule.Import(generatedMethod);
 
             method.Body.InitLocals = true;
-            var generatedValueVar = new VariableDefinition(method.ReturnType.ReturnType);
 
             CilWorker cilWorker = method.Body.CilWorker;
-
-            bool hasReturnValue = (method.ReturnType.ReturnType.FullName != typeof(void).FullName);
 
             if (methodHook.HookType == HookType.ReplaceMethod)
             {
                 method.Body.Instructions.Clear();
                 method.Body.Variables.Clear();
-
-                if (hasReturnValue)
-                {
-                    method.Body.Variables.Add(generatedValueVar);
-                }
-
-                Instruction nop = cilWorker.Create(OpCodes.Nop);
-                cilWorker.Append(nop);
-                // call ctor
-                Instruction newGeneratedType = cilWorker.Create(OpCodes.Newobj, generatedTypeCtorRef);
-                cilWorker.Append(newGeneratedType);
-                // load arguments on stack if any
-                for (int i = 0; i < method.Parameters.Count; i++)
-                {
-                    Instruction loadArg = cilWorker.Create(OpCodes.Ldarga_S, method.Parameters[i]);
-                    cilWorker.Append(loadArg);
-                }
-                // call replacing method
-                Instruction callGeneratedMethod = cilWorker.Create(OpCodes.Call, generatedMethodRef);
-                cilWorker.Append(callGeneratedMethod);
-                if (hasReturnValue)
-                {
-                    // assign to variable
-                    Instruction assignNewGeneratedValue = cilWorker.Create(OpCodes.Stloc, generatedValueVar);
-                    cilWorker.Append(assignNewGeneratedValue);
-                    Instruction ldLoc = cilWorker.Create(OpCodes.Ldloc_0);
-                    Instruction brs = cilWorker.Create(OpCodes.Br_S, ldLoc);
-                    cilWorker.Append(brs);
-                    cilWorker.Append(ldLoc);
-                }
                 // return value
-                Instruction ret = cilWorker.Create(OpCodes.Ret);
-                cilWorker.Append(ret);
+                Instruction returnInstruction = cilWorker.Create(OpCodes.Ret);
+                cilWorker.Append(returnInstruction);
+                InsertCustomCodeCall(method, generatedTypeCtorRef, generatedMethodRef, cilWorker, returnInstruction, true);
             }
             else if ((methodHook.HookType & HookType.OnMethodEnter) == HookType.OnMethodEnter)
             {
                 Instruction firstInstruction = method.Body.Instructions[0];
-
-                Instruction nop = cilWorker.Create(OpCodes.Nop);
-                cilWorker.InsertBefore(firstInstruction, nop);
-                // call ctor
-                Instruction newGeneratedType = cilWorker.Create(OpCodes.Newobj, generatedTypeCtorRef);
-                cilWorker.InsertBefore(firstInstruction, newGeneratedType);
-                // load arguments on stack if any
-                for (int i = 0; i < method.Parameters.Count; i++)
-                {
-                    Instruction loadArg = cilWorker.Create(OpCodes.Ldarga_S, method.Parameters[i]);
-                    cilWorker.InsertBefore(firstInstruction, loadArg);
-                }
-                // call replacing method
-                Instruction callGeneratedMethod = cilWorker.Create(OpCodes.Call, generatedMethodRef);
-                cilWorker.InsertBefore(firstInstruction, callGeneratedMethod);
-                if (hasReturnValue)
-                {
-                    // remove value from stack
-                    Instruction pop = cilWorker.Create(OpCodes.Pop);
-                    cilWorker.InsertBefore(firstInstruction, pop);
-                }
+                InsertCustomCodeCall(method, generatedTypeCtorRef, generatedMethodRef, cilWorker, firstInstruction, false);
             }
             else if ((methodHook.HookType & HookType.OnMethodExit) == HookType.OnMethodExit)
             {
-                var body = method.Body;
-                int instrCount = body.Instructions.Count;
-                Instruction retInstr = body.Instructions[instrCount - 1];
-                if (retInstr.OpCode != OpCodes.Ret)
+                Instruction returnInstruction = method.Body.Instructions[method.Body.Instructions.Count - 1];
+                if (returnInstruction.OpCode != OpCodes.Ret)
                 {
                     throw new InvalidOperationException(String.Format("Method '{0}' has no valid ret instruction", method.Name));
                 }
+                InsertCustomCodeCall(method, generatedTypeCtorRef, generatedMethodRef, cilWorker, returnInstruction, false);
+            }
+        }
 
-                Instruction nop = cilWorker.Create(OpCodes.Nop);
-                cilWorker.InsertBefore(retInstr, nop);
-                // call ctor
-                Instruction newGeneratedType = cilWorker.Create(OpCodes.Newobj, generatedTypeCtorRef);
-                cilWorker.InsertBefore(retInstr, newGeneratedType);
-                // load arguments on stack if any
-                for (int i = 0; i < method.Parameters.Count; i++)
+        private static void InsertCustomCodeCall(
+            MethodDefinition method, 
+            MethodReference generatedTypeCtorRef, 
+            MethodReference generatedMethodRef, 
+            CilWorker cilWorker, 
+            Instruction instructionToInsertBefore,
+            bool replaceMethod
+            )
+        {
+            bool hasReturnValue = (method.ReturnType.ReturnType.FullName != typeof(void).FullName);
+
+            Instruction nop = cilWorker.Create(OpCodes.Nop);
+            cilWorker.InsertBefore(instructionToInsertBefore, nop);
+            
+            // call ctor
+            Instruction newGeneratedType = cilWorker.Create(OpCodes.Newobj, generatedTypeCtorRef);
+            cilWorker.InsertBefore(instructionToInsertBefore, newGeneratedType);
+            
+            // load arguments on stack if any
+            for (int i = 0; i < method.Parameters.Count; i++)
+            {
+                Instruction loadArg = cilWorker.Create(OpCodes.Ldarga_S, method.Parameters[i]);
+                cilWorker.InsertBefore(instructionToInsertBefore, loadArg);
+            }
+
+            // call replacing method
+            Instruction callGeneratedMethod = cilWorker.Create(OpCodes.Call, generatedMethodRef);
+            cilWorker.InsertBefore(instructionToInsertBefore, callGeneratedMethod);
+
+            if (hasReturnValue)
+            {
+                if (replaceMethod)
                 {
-                    Instruction loadArg = cilWorker.Create(OpCodes.Ldarga_S, method.Parameters[i]);
-                    cilWorker.InsertBefore(retInstr, loadArg);
+                    // add variable to list
+                    var generatedValueVar = new VariableDefinition(method.ReturnType.ReturnType);
+                    method.Body.Variables.Add(generatedValueVar);
+                    // assign to variable
+                    Instruction assignNewGeneratedValue = cilWorker.Create(OpCodes.Stloc, generatedValueVar);
+                    cilWorker.InsertBefore(instructionToInsertBefore, assignNewGeneratedValue);
+                    Instruction ldLoc = cilWorker.Create(OpCodes.Ldloc_0);
+                    Instruction brs = cilWorker.Create(OpCodes.Br_S, ldLoc);
+                    cilWorker.InsertBefore(instructionToInsertBefore, brs);
+                    cilWorker.InsertBefore(instructionToInsertBefore, ldLoc);
                 }
-                // call replacing method
-                Instruction callGeneratedMethod = cilWorker.Create(OpCodes.Call, generatedMethodRef);
-                cilWorker.InsertBefore(retInstr, callGeneratedMethod);
-                if (hasReturnValue)
+                else
                 {
                     // remove value from stack
                     Instruction pop = cilWorker.Create(OpCodes.Pop);
-                    cilWorker.InsertBefore(retInstr, pop);
+                    cilWorker.InsertBefore(instructionToInsertBefore, pop);
                 }
             }
+        }
+
+        private AssemblyDefinition LoadGeneratedAssembly(string assemblyName)
+        {
+            string generatedAssemblyName = String.Format("{0}.dll", assemblyName);
+            string generatedAssemblyPath = Path.Combine(Path.GetDirectoryName(m_assemblyPath), generatedAssemblyName);
+            return AssemblyFactory.GetAssembly(generatedAssemblyPath);
         }
 
         private void DumpMethod(string file, MethodDefinition methodDefinition)
