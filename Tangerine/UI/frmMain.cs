@@ -159,6 +159,8 @@ namespace Tangerine.UI
             }
             else
             {
+                var requirement = Requirement.GetRequirement("ID_REQ_MEMORY_90");
+                tbxRequirements.AppendText(string.Format("{0}: {1}\r\n", requirement.Id, requirement.Description));
                 HideExcessTabs();
             }
         }

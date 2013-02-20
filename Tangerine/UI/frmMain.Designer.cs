@@ -84,6 +84,7 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
+            this.associationsTLPanel = new System.Windows.Forms.TableLayoutPanel();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -103,6 +104,7 @@
             this.pnlURIs.SuspendLayout();
             this.pnlFileTypes.SuspendLayout();
             this.tabDynamic.SuspendLayout();
+            this.associationsTLPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -319,20 +321,21 @@
             this.tabGeneralInfo.Location = new System.Drawing.Point(4, 22);
             this.tabGeneralInfo.Name = "tabGeneralInfo";
             this.tabGeneralInfo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabGeneralInfo.Size = new System.Drawing.Size(533, 441);
+            this.tabGeneralInfo.Size = new System.Drawing.Size(535, 441);
             this.tabGeneralInfo.TabIndex = 0;
             this.tabGeneralInfo.Text = "General information";
             this.tabGeneralInfo.UseVisualStyleBackColor = true;
             // 
             // pnlScreenResolutions
             // 
-            this.pnlScreenResolutions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.pnlScreenResolutions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlScreenResolutions.AutoSize = true;
             this.pnlScreenResolutions.Controls.Add(this.tbxScreenResolutions);
             this.pnlScreenResolutions.Location = new System.Drawing.Point(8, 171);
             this.pnlScreenResolutions.Name = "pnlScreenResolutions";
-            this.pnlScreenResolutions.Size = new System.Drawing.Size(509, 103);
+            this.pnlScreenResolutions.Size = new System.Drawing.Size(511, 264);
             this.pnlScreenResolutions.TabIndex = 14;
             // 
             // tbxScreenResolutions
@@ -344,7 +347,7 @@
             this.tbxScreenResolutions.Multiline = true;
             this.tbxScreenResolutions.Name = "tbxScreenResolutions";
             this.tbxScreenResolutions.ReadOnly = true;
-            this.tbxScreenResolutions.Size = new System.Drawing.Size(509, 103);
+            this.tbxScreenResolutions.Size = new System.Drawing.Size(511, 264);
             this.tbxScreenResolutions.TabIndex = 0;
             // 
             // lblScreenResolutions
@@ -412,7 +415,7 @@
             this.tabCapabilities.Location = new System.Drawing.Point(4, 22);
             this.tabCapabilities.Name = "tabCapabilities";
             this.tabCapabilities.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCapabilities.Size = new System.Drawing.Size(520, 441);
+            this.tabCapabilities.Size = new System.Drawing.Size(535, 441);
             this.tabCapabilities.TabIndex = 1;
             this.tabCapabilities.Text = "Capabilities";
             this.tabCapabilities.UseVisualStyleBackColor = true;
@@ -424,7 +427,7 @@
             this.pnlCapabilities.Location = new System.Drawing.Point(3, 3);
             this.pnlCapabilities.Margin = new System.Windows.Forms.Padding(2);
             this.pnlCapabilities.Name = "pnlCapabilities";
-            this.pnlCapabilities.Size = new System.Drawing.Size(514, 435);
+            this.pnlCapabilities.Size = new System.Drawing.Size(529, 435);
             this.pnlCapabilities.TabIndex = 15;
             // 
             // tbxCapabilities
@@ -439,7 +442,7 @@
             this.tbxCapabilities.ReadOnly = true;
             this.tbxCapabilities.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.tbxCapabilities.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbxCapabilities.Size = new System.Drawing.Size(514, 435);
+            this.tbxCapabilities.Size = new System.Drawing.Size(529, 435);
             this.tbxCapabilities.TabIndex = 16;
             // 
             // tabRequirements
@@ -448,7 +451,7 @@
             this.tabRequirements.Location = new System.Drawing.Point(4, 22);
             this.tabRequirements.Name = "tabRequirements";
             this.tabRequirements.Padding = new System.Windows.Forms.Padding(3);
-            this.tabRequirements.Size = new System.Drawing.Size(533, 441);
+            this.tabRequirements.Size = new System.Drawing.Size(535, 441);
             this.tabRequirements.TabIndex = 2;
             this.tabRequirements.Text = "Requirements";
             this.tabRequirements.UseVisualStyleBackColor = true;
@@ -460,7 +463,7 @@
             this.pnlRequirements.Location = new System.Drawing.Point(3, 3);
             this.pnlRequirements.Margin = new System.Windows.Forms.Padding(2);
             this.pnlRequirements.Name = "pnlRequirements";
-            this.pnlRequirements.Size = new System.Drawing.Size(527, 435);
+            this.pnlRequirements.Size = new System.Drawing.Size(529, 435);
             this.pnlRequirements.TabIndex = 0;
             // 
             // tbxRequirements
@@ -474,15 +477,12 @@
             this.tbxRequirements.Name = "tbxRequirements";
             this.tbxRequirements.ReadOnly = true;
             this.tbxRequirements.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbxRequirements.Size = new System.Drawing.Size(527, 435);
+            this.tbxRequirements.Size = new System.Drawing.Size(529, 435);
             this.tbxRequirements.TabIndex = 3;
             // 
             // tabAssociations
             // 
-            this.tabAssociations.Controls.Add(this.label2);
-            this.tabAssociations.Controls.Add(this.pnlURIs);
-            this.tabAssociations.Controls.Add(this.pnlFileTypes);
-            this.tabAssociations.Controls.Add(this.label1);
+            this.tabAssociations.Controls.Add(this.associationsTLPanel);
             this.tabAssociations.Location = new System.Drawing.Point(4, 22);
             this.tabAssociations.Name = "tabAssociations";
             this.tabAssociations.Size = new System.Drawing.Size(535, 441);
@@ -493,8 +493,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 147);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(2, 222);
+            this.label2.Margin = new System.Windows.Forms.Padding(2);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(89, 13);
             this.label2.TabIndex = 13;
@@ -502,12 +502,11 @@
             // 
             // pnlURIs
             // 
-            this.pnlURIs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlURIs.Controls.Add(this.tbxURIs);
-            this.pnlURIs.Location = new System.Drawing.Point(8, 163);
+            this.pnlURIs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlURIs.Location = new System.Drawing.Point(3, 246);
             this.pnlURIs.Name = "pnlURIs";
-            this.pnlURIs.Size = new System.Drawing.Size(509, 103);
+            this.pnlURIs.Size = new System.Drawing.Size(529, 192);
             this.pnlURIs.TabIndex = 12;
             // 
             // tbxURIs
@@ -519,17 +518,17 @@
             this.tbxURIs.Multiline = true;
             this.tbxURIs.Name = "tbxURIs";
             this.tbxURIs.ReadOnly = true;
-            this.tbxURIs.Size = new System.Drawing.Size(509, 103);
+            this.tbxURIs.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbxURIs.Size = new System.Drawing.Size(529, 192);
             this.tbxURIs.TabIndex = 10;
             // 
             // pnlFileTypes
             // 
-            this.pnlFileTypes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlFileTypes.Controls.Add(this.tbxFileTypes);
-            this.pnlFileTypes.Location = new System.Drawing.Point(8, 29);
+            this.pnlFileTypes.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlFileTypes.Location = new System.Drawing.Point(3, 26);
             this.pnlFileTypes.Name = "pnlFileTypes";
-            this.pnlFileTypes.Size = new System.Drawing.Size(509, 103);
+            this.pnlFileTypes.Size = new System.Drawing.Size(529, 191);
             this.pnlFileTypes.TabIndex = 11;
             // 
             // tbxFileTypes
@@ -541,14 +540,15 @@
             this.tbxFileTypes.Multiline = true;
             this.tbxFileTypes.Name = "tbxFileTypes";
             this.tbxFileTypes.ReadOnly = true;
-            this.tbxFileTypes.Size = new System.Drawing.Size(509, 103);
+            this.tbxFileTypes.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.tbxFileTypes.Size = new System.Drawing.Size(529, 191);
             this.tbxFileTypes.TabIndex = 10;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 13);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(2, 2);
+            this.label1.Margin = new System.Windows.Forms.Padding(2);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(112, 13);
             this.label1.TabIndex = 9;
@@ -715,6 +715,25 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
+            // associationsTLPanel
+            // 
+            this.associationsTLPanel.ColumnCount = 1;
+            this.associationsTLPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.associationsTLPanel.Controls.Add(this.label1, 0, 0);
+            this.associationsTLPanel.Controls.Add(this.pnlURIs, 0, 3);
+            this.associationsTLPanel.Controls.Add(this.label2, 0, 2);
+            this.associationsTLPanel.Controls.Add(this.pnlFileTypes, 0, 1);
+            this.associationsTLPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.associationsTLPanel.Location = new System.Drawing.Point(0, 0);
+            this.associationsTLPanel.Name = "associationsTLPanel";
+            this.associationsTLPanel.RowCount = 4;
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.associationsTLPanel.Size = new System.Drawing.Size(535, 441);
+            this.associationsTLPanel.TabIndex = 14;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -756,13 +775,14 @@
             this.pnlRequirements.ResumeLayout(false);
             this.pnlRequirements.PerformLayout();
             this.tabAssociations.ResumeLayout(false);
-            this.tabAssociations.PerformLayout();
             this.pnlURIs.ResumeLayout(false);
             this.pnlURIs.PerformLayout();
             this.pnlFileTypes.ResumeLayout(false);
             this.pnlFileTypes.PerformLayout();
             this.tabDynamic.ResumeLayout(false);
             this.tabDynamic.PerformLayout();
+            this.associationsTLPanel.ResumeLayout(false);
+            this.associationsTLPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -825,6 +845,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel pnlURIs;
         private System.Windows.Forms.TextBox tbxURIs;
+        private System.Windows.Forms.TableLayoutPanel associationsTLPanel;
 
     }
 }
