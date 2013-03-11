@@ -122,10 +122,10 @@ namespace Tangerine.BLL
 
             if (m_hookProvider.LogMethodNames || (methodHook != null && methodHook.LogMethodName))
             {
-                Instruction logMethodName = LogMethodName(methodDefinition, typeDefinition);
+                Instruction targetInstruction = LogMethodName(methodDefinition, typeDefinition);
                 if (m_hookProvider.LogParameterValues || (methodHook != null && methodHook.LogParameterValues))
                 {
-                    LogMethodParameters(methodDefinition, logMethodName);
+                    LogMethodParameters(methodDefinition, targetInstruction);
                 }
                 if (m_hookProvider.LogReturnValues || (methodHook != null && methodHook.LogReturnValues))
                 {
@@ -283,19 +283,20 @@ namespace Tangerine.BLL
         private Instruction LogMethodName(MethodDefinition methodDefinition, TypeDefinition typeDefinition)
         {
             MethodBody body = methodDefinition.Body;
+            Instruction firstInstruction = methodDefinition.Body.Instructions[0];
 
             Instruction varMethodName = body.CilWorker.Create(
                 OpCodes.Ldstr,
                 "*Type: " + typeDefinition.FullName + ", Method name: " + methodDefinition.Name
                 );
-            body.CilWorker.InsertBefore(methodDefinition.Body.Instructions[0], varMethodName);
+            body.CilWorker.InsertBefore(firstInstruction, varMethodName);
             Instruction logMethodName = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
-            body.CilWorker.InsertAfter(varMethodName, logMethodName);
+            body.CilWorker.InsertBefore(firstInstruction, logMethodName);
 
-            return logMethodName;
+            return firstInstruction;
         }
 
-        private void LogMethodParameters(MethodDefinition methodDefinition, Instruction previousInstruction)
+        private void LogMethodParameters(MethodDefinition methodDefinition, Instruction targetInstruction)
         {
             if (!methodDefinition.HasParameters)
             {
@@ -305,104 +306,91 @@ namespace Tangerine.BLL
             ParameterDefinitionCollection methodParameters = methodDefinition.Parameters;
             MethodBody methodBody = methodDefinition.Body;
 
-            // NOTE: parameters are loaded in reverse order
-            int parameterPosition = methodDefinition.IsStatic ? methodParameters.Count - 1 : methodParameters.Count;
             for (int i = methodParameters.Count - 1; i >= 0; i--)
             {
                 ParameterDefinition parameter = methodParameters[i];
-                Instruction logParamName = LogParameterName(parameter.Name, methodBody, previousInstruction);
-                LogParameterValue(parameter, parameterPosition, methodBody, logParamName);
-                parameterPosition--;
+                LogParameterName(methodBody, parameter.Name, targetInstruction);
+                LogParameterValue(methodBody, parameter, targetInstruction);
             }
         }
 
-        private Instruction LogParameterName(string parameterName, MethodBody body, Instruction previousInstruction)
+        private void LogParameterName(MethodBody body, string parameterName, Instruction targetInstruction)
         {
             Instruction varParamName = body.CilWorker.Create(OpCodes.Ldstr, "*Parameter name: " + parameterName);
-            body.CilWorker.InsertAfter(previousInstruction, varParamName);
+            body.CilWorker.InsertBefore(targetInstruction, varParamName);
             Instruction logParamName = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
-            body.CilWorker.InsertAfter(varParamName, logParamName);
-            return logParamName;
+            body.CilWorker.InsertBefore(targetInstruction, logParamName);
         }
 
-        private void LogParameterValue(
-            ParameterDefinition parameter,
-            int parameterPosition,
-            MethodBody body,
-            Instruction previousInstruction
-            )
+        private void LogParameterValue(MethodBody body, ParameterDefinition parameter, Instruction targetInstruction)
         {
-            ReferenceType refType = parameter.ParameterType as ReferenceType;
-            bool isRefParameter = (refType != null);
-
             Instruction varValue = body.CilWorker.Create(OpCodes.Ldarg, parameter);
+            body.CilWorker.InsertBefore(targetInstruction, varValue);
+            LogValue(body, parameter.ParameterType, targetInstruction);
+        }
 
-            switch (parameter.ParameterType.Name)
+        private void LogValue(MethodBody body, TypeReference valueType, Instruction targetInstruction)
+        {
+            switch (valueType.Name)
             {
                 case "String":
                     {
-                        body.CilWorker.InsertAfter(previousInstruction, varValue);
                         Instruction logStr = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
-                        body.CilWorker.InsertAfter(varValue, logStr);
+                        body.CilWorker.InsertBefore(targetInstruction, logStr);
                     }
                     break;
 
                 case "Int32":
                     {
-                        body.CilWorker.InsertAfter(previousInstruction, varValue);
                         Instruction logInt = body.CilWorker.Create(OpCodes.Call, m_refWritelnInt);
-                        body.CilWorker.InsertAfter(varValue, logInt);
+                        body.CilWorker.InsertBefore(targetInstruction, logInt);
                     }
                     break;
 
                 case "Byte[]":
                     {
                         // convert byte array to string
-                        body.CilWorker.InsertAfter(previousInstruction, varValue);
                         Instruction toString = body.CilWorker.Create(OpCodes.Call, m_refByteToString);
-                        body.CilWorker.InsertAfter(varValue, toString);
+                        body.CilWorker.InsertBefore(targetInstruction, toString);
                         // log string representation
                         Instruction logByte = body.CilWorker.Create(OpCodes.Call, m_refWritelnObj);
-                        body.CilWorker.InsertAfter(toString, logByte);
+                        body.CilWorker.InsertBefore(targetInstruction, logByte);
                     }
                     break;
 
                 default:
                     {
-                        body.CilWorker.InsertAfter(previousInstruction, varValue);
-                        Instruction lastInstr = varValue;
+                        ReferenceType refType = valueType as ReferenceType;
+                        bool isByRef = (refType != null);
+
                         // box value types
-                        if (parameter.ParameterType.IsValueType)
+                        if (valueType.IsValueType)
                         {
-                            var paramTypeRef = isRefParameter ? refType.ElementType : parameter.ParameterType;
-                            if (isRefParameter)
+                            var paramTypeRef = isByRef ? refType.ElementType : valueType;
+                            if (isByRef)
                             {
                                 // load value type object by address on stack
                                 Instruction objInstr = body.CilWorker.Create(OpCodes.Ldobj, paramTypeRef);
-                                body.CilWorker.InsertAfter(lastInstr, objInstr);
-                                lastInstr = objInstr;
+                                body.CilWorker.InsertBefore(targetInstruction, objInstr);
                             }
                             // box it
                             Instruction boxInstr = body.CilWorker.Create(OpCodes.Box, paramTypeRef);
-                            body.CilWorker.InsertAfter(lastInstr, boxInstr);
-                            lastInstr = boxInstr;
-                            if (isRefParameter && paramTypeRef.Name == "Byte[]")
+                            body.CilWorker.InsertBefore(targetInstruction, boxInstr);
+                            if (isByRef && paramTypeRef.Name == "Byte[]")
                             {
                                 // convert byte array to string
                                 Instruction toString = body.CilWorker.Create(OpCodes.Call, m_refByteToString);
-                                body.CilWorker.InsertAfter(lastInstr, toString);
-                                lastInstr = toString;
+                                body.CilWorker.InsertBefore(targetInstruction, toString);
                             }
                         }
-                        else if (isRefParameter)
+                        else if (isByRef)
                         {
                             Instruction refInstr = body.CilWorker.Create(OpCodes.Ldind_Ref);
-                            body.CilWorker.InsertAfter(lastInstr, refInstr);
-                            lastInstr = refInstr;
+                            body.CilWorker.InsertBefore(targetInstruction, refInstr);
                         }
                         // log value
                         Instruction logStr = body.CilWorker.Create(OpCodes.Call, m_refWritelnObj);
-                        body.CilWorker.InsertAfter(lastInstr, logStr);
+                        body.CilWorker.InsertBefore(targetInstruction, logStr);
                     }
                     break;
             }
@@ -418,8 +406,8 @@ namespace Tangerine.BLL
 
             var body = methodDefinition.Body;
             int instrCount = body.Instructions.Count;
-            Instruction retInstr = body.Instructions[instrCount - 1];
-            if (retInstr.OpCode != OpCodes.Ret)
+            Instruction retInstruction = body.Instructions[instrCount - 1];
+            if (retInstruction.OpCode != OpCodes.Ret)
             {
                 throw new InvalidOperationException(String.Format("Method '{0}' has no valid ret instruction", methodDefinition.Name));
             }
@@ -431,66 +419,24 @@ namespace Tangerine.BLL
 
             // load return value from stack to temp variable
             Instruction saveRetValueInstr = body.CilWorker.Create(OpCodes.Stloc, returnValueVar);
-            body.CilWorker.InsertBefore(retInstr, saveRetValueInstr);
+            body.CilWorker.InsertBefore(retInstruction, saveRetValueInstr);
 
             // return value marker
             string methodName = "*Return value: " + methodDefinition.Name;
             Instruction varParamName = body.CilWorker.Create(OpCodes.Ldstr, methodName);
-            body.CilWorker.InsertBefore(retInstr, varParamName);
+            body.CilWorker.InsertBefore(retInstruction, varParamName);
             Instruction logParamName = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
-            body.CilWorker.InsertBefore(retInstr, logParamName);
+            body.CilWorker.InsertBefore(retInstruction, logParamName);
 
             // load return value on stack
             Instruction retValue = body.CilWorker.Create(OpCodes.Ldloc, returnValueVar);
-            body.CilWorker.InsertBefore(retInstr, retValue);
+            body.CilWorker.InsertBefore(retInstruction, retValue);
 
-            LogValue(body, retInstr, returnType);
+            LogValue(body, returnType, retInstruction);
 
             // load return value from temp variable back on stack
             Instruction loadRetValueInstr = body.CilWorker.Create(OpCodes.Ldloc, returnValueVar);
-            body.CilWorker.InsertBefore(retInstr, loadRetValueInstr);
-        }
-
-        private void LogValue(MethodBody body, Instruction targetInstr, TypeReference valueType)
-        {
-            MethodReference logMethodRef;
-
-            switch (valueType.Name)
-            {
-                case "String":
-                    logMethodRef = m_refWritelnStr;
-                    break;
-
-                case "Int32":
-                    logMethodRef = m_refWritelnInt;
-                    break;
-
-                case "Char":
-                    logMethodRef = m_refWritelnChar;
-                    break;
-
-                default:
-                    logMethodRef = m_refWritelnObj;
-                    break;
-            }
-
-            if (valueType.Name == "Byte[]")
-            {
-                Instruction toStringInstr = body.CilWorker.Create(OpCodes.Call, m_refByteToString);
-                body.CilWorker.InsertBefore(targetInstr, toStringInstr);
-            }
-
-            // box other value types
-            if (valueType.IsValueType
-                && valueType.FullName != typeof(int).FullName
-                && valueType.FullName != typeof(char).FullName)
-            {
-                Instruction boxInstr = body.CilWorker.Create(OpCodes.Box, valueType);
-                body.CilWorker.InsertBefore(targetInstr, boxInstr);
-            }
-
-            Instruction logInstr = body.CilWorker.Create(OpCodes.Call, logMethodRef);
-            body.CilWorker.InsertBefore(targetInstr, logInstr);
+            body.CilWorker.InsertBefore(retInstruction, loadRetValueInstr);
         }
     }
 }
