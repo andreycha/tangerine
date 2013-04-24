@@ -23,7 +23,7 @@ namespace Tangerine.UI
 
         private readonly MainPresenter m_presenter;
 
-        private TreeModel m_TreeModel;
+        private AssemblyTreeModel m_TreeModel;
         private ContextMenu m_contextMenu;
 
         public frmMain()
@@ -195,11 +195,11 @@ namespace Tangerine.UI
             treeNode.IsExpanded = true;
         }
 
-        public void SetTreeModel(TreeModel treeModel)
+        public void SetTreeModel(AssemblyTreeModel treeModel)
         {
             if (InvokeRequired)
             {
-                BeginInvoke(new Action<TreeModel>(SetTreeModelInternal), treeModel);
+                BeginInvoke(new Action<AssemblyTreeModel>(SetTreeModelInternal), treeModel);
             }
             else
             {
@@ -207,9 +207,12 @@ namespace Tangerine.UI
             }
         }
 
-        private void SetTreeModelInternal(TreeModel treeModel)
+        private void SetTreeModelInternal(AssemblyTreeModel treeModel)
         {
             m_TreeModel = treeModel;
+            m_TreeModel.FilterIO = cbxIOFilter.Checked;
+            m_TreeModel.FilterNet = cbxNetFilter.Checked;
+            m_TreeModel.FilterSecurity = cbxCryptoFilter.Checked;
             trvAssemblies.Model = m_TreeModel;
         }
 
@@ -509,6 +512,21 @@ namespace Tangerine.UI
         public bool GetLogReturnValues()
         {
             return chbLogReturnValues.Checked;
+        }
+
+        private void cbxIOFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_TreeModel != null) m_TreeModel.FilterIO = cbxIOFilter.Checked;
+        }
+
+        private void cbxNetFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_TreeModel != null) m_TreeModel.FilterNet = cbxNetFilter.Checked;
+        }
+
+        private void cbxCryptoFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_TreeModel != null) m_TreeModel.FilterSecurity = cbxCryptoFilter.Checked;
         }
     }    
 }

@@ -46,7 +46,7 @@ namespace Tangerine.UI.BLL
                     ResetButton("deploy");
                     m_view.SetManifestInformation(m_xap);
 
-                    var treeModel = new TreeModel();
+                    var treeModel = new AssemblyTreeModel();
                     var rootNode = new Node(m_xap.Title);
                     treeModel.Nodes.Add(rootNode);
 

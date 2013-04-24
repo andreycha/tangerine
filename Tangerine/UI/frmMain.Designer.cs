@@ -43,12 +43,16 @@
             this.tabControlMain = new System.Windows.Forms.TabControl();
             this.tabStatic = new System.Windows.Forms.TabPage();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.pnlTreeAssemblies = new System.Windows.Forms.Panel();
             this.trvAssemblies = new Aga.Controls.Tree.TreeViewAdv();
             this.nodeIcon4 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeTextBox1 = new Aga.Controls.Tree.NodeControls.NodeTextBox();
             this.nodeIcon1 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon2 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon3 = new Aga.Controls.Tree.NodeControls.NodeIcon();
+            this.cbxCryptoFilter = new System.Windows.Forms.CheckBox();
+            this.cbxNetFilter = new System.Windows.Forms.CheckBox();
+            this.cbxIOFilter = new System.Windows.Forms.CheckBox();
             this.tabXapFileInformation = new System.Windows.Forms.TabControl();
             this.tabGeneralInfo = new System.Windows.Forms.TabPage();
             this.pnlScreenResolutions = new System.Windows.Forms.Panel();
@@ -66,12 +70,13 @@
             this.pnlRequirements = new System.Windows.Forms.Panel();
             this.tbxRequirements = new System.Windows.Forms.TextBox();
             this.tabAssociations = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
+            this.associationsTLPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.pnlURIs = new System.Windows.Forms.Panel();
             this.tbxURIs = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.pnlFileTypes = new System.Windows.Forms.Panel();
             this.tbxFileTypes = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.tabDynamic = new System.Windows.Forms.TabPage();
             this.chbLogReturnValues = new System.Windows.Forms.CheckBox();
             this.chbLogParameters = new System.Windows.Forms.CheckBox();
@@ -84,7 +89,6 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
-            this.associationsTLPanel = new System.Windows.Forms.TableLayoutPanel();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -93,6 +97,7 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            this.pnlTreeAssemblies.SuspendLayout();
             this.tabXapFileInformation.SuspendLayout();
             this.tabGeneralInfo.SuspendLayout();
             this.pnlScreenResolutions.SuspendLayout();
@@ -101,10 +106,10 @@
             this.tabRequirements.SuspendLayout();
             this.pnlRequirements.SuspendLayout();
             this.tabAssociations.SuspendLayout();
+            this.associationsTLPanel.SuspendLayout();
             this.pnlURIs.SuspendLayout();
             this.pnlFileTypes.SuspendLayout();
             this.tabDynamic.SuspendLayout();
-            this.associationsTLPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menu
@@ -246,7 +251,10 @@
             // 
             // splitContainer.Panel1
             // 
-            this.splitContainer.Panel1.Controls.Add(this.trvAssemblies);
+            this.splitContainer.Panel1.Controls.Add(this.pnlTreeAssemblies);
+            this.splitContainer.Panel1.Controls.Add(this.cbxCryptoFilter);
+            this.splitContainer.Panel1.Controls.Add(this.cbxNetFilter);
+            this.splitContainer.Panel1.Controls.Add(this.cbxIOFilter);
             // 
             // splitContainer.Panel2
             // 
@@ -254,6 +262,17 @@
             this.splitContainer.Size = new System.Drawing.Size(870, 467);
             this.splitContainer.SplitterDistance = 323;
             this.splitContainer.TabIndex = 0;
+            // 
+            // pnlTreeAssemblies
+            // 
+            this.pnlTreeAssemblies.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlTreeAssemblies.Controls.Add(this.trvAssemblies);
+            this.pnlTreeAssemblies.Location = new System.Drawing.Point(5, 33);
+            this.pnlTreeAssemblies.Name = "pnlTreeAssemblies";
+            this.pnlTreeAssemblies.Size = new System.Drawing.Size(315, 434);
+            this.pnlTreeAssemblies.TabIndex = 6;
             // 
             // trvAssemblies
             // 
@@ -271,7 +290,7 @@
             this.trvAssemblies.NodeControls.Add(this.nodeIcon2);
             this.trvAssemblies.NodeControls.Add(this.nodeIcon3);
             this.trvAssemblies.SelectedNode = null;
-            this.trvAssemblies.Size = new System.Drawing.Size(323, 467);
+            this.trvAssemblies.Size = new System.Drawing.Size(315, 434);
             this.trvAssemblies.TabIndex = 2;
             this.trvAssemblies.Text = "treeViewAdv1";
             this.trvAssemblies.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this.trvAssemblies_NodeMouseDoubleClick);
@@ -295,6 +314,45 @@
             // nodeIcon3
             // 
             this.nodeIcon3.DataPropertyName = "SecurityIcon";
+            // 
+            // cbxCryptoFilter
+            // 
+            this.cbxCryptoFilter.Image = global::Tangerine.Properties.Resources.security;
+            this.cbxCryptoFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbxCryptoFilter.Location = new System.Drawing.Point(183, 3);
+            this.cbxCryptoFilter.Name = "cbxCryptoFilter";
+            this.cbxCryptoFilter.Size = new System.Drawing.Size(76, 31);
+            this.cbxCryptoFilter.TabIndex = 5;
+            this.cbxCryptoFilter.Text = "Security";
+            this.cbxCryptoFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbxCryptoFilter.UseVisualStyleBackColor = true;
+            this.cbxCryptoFilter.CheckedChanged += new System.EventHandler(this.cbxCryptoFilter_CheckedChanged);
+            // 
+            // cbxNetFilter
+            // 
+            this.cbxNetFilter.Image = global::Tangerine.Properties.Resources.network;
+            this.cbxNetFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbxNetFilter.Location = new System.Drawing.Point(100, 3);
+            this.cbxNetFilter.Name = "cbxNetFilter";
+            this.cbxNetFilter.Size = new System.Drawing.Size(77, 31);
+            this.cbxNetFilter.TabIndex = 4;
+            this.cbxNetFilter.Text = "Network";
+            this.cbxNetFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbxNetFilter.UseVisualStyleBackColor = true;
+            this.cbxNetFilter.CheckedChanged += new System.EventHandler(this.cbxNetFilter_CheckedChanged);
+            // 
+            // cbxIOFilter
+            // 
+            this.cbxIOFilter.Image = global::Tangerine.Properties.Resources.file;
+            this.cbxIOFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbxIOFilter.Location = new System.Drawing.Point(5, 3);
+            this.cbxIOFilter.Name = "cbxIOFilter";
+            this.cbxIOFilter.Size = new System.Drawing.Size(89, 31);
+            this.cbxIOFilter.TabIndex = 3;
+            this.cbxIOFilter.Text = "File System";
+            this.cbxIOFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbxIOFilter.UseVisualStyleBackColor = true;
+            this.cbxIOFilter.CheckedChanged += new System.EventHandler(this.cbxIOFilter_CheckedChanged);
             // 
             // tabXapFileInformation
             // 
@@ -490,15 +548,34 @@
             this.tabAssociations.Text = "Associations";
             this.tabAssociations.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // associationsTLPanel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(2, 222);
-            this.label2.Margin = new System.Windows.Forms.Padding(2);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "Associated URIs:";
+            this.associationsTLPanel.ColumnCount = 1;
+            this.associationsTLPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.associationsTLPanel.Controls.Add(this.label1, 0, 0);
+            this.associationsTLPanel.Controls.Add(this.pnlURIs, 0, 3);
+            this.associationsTLPanel.Controls.Add(this.label2, 0, 2);
+            this.associationsTLPanel.Controls.Add(this.pnlFileTypes, 0, 1);
+            this.associationsTLPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.associationsTLPanel.Location = new System.Drawing.Point(0, 0);
+            this.associationsTLPanel.Name = "associationsTLPanel";
+            this.associationsTLPanel.RowCount = 4;
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
+            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.associationsTLPanel.Size = new System.Drawing.Size(535, 441);
+            this.associationsTLPanel.TabIndex = 14;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(2, 2);
+            this.label1.Margin = new System.Windows.Forms.Padding(2);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(112, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Registered File Types:";
             // 
             // pnlURIs
             // 
@@ -522,6 +599,16 @@
             this.tbxURIs.Size = new System.Drawing.Size(529, 192);
             this.tbxURIs.TabIndex = 10;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(2, 222);
+            this.label2.Margin = new System.Windows.Forms.Padding(2);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(89, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Associated URIs:";
+            // 
             // pnlFileTypes
             // 
             this.pnlFileTypes.Controls.Add(this.tbxFileTypes);
@@ -543,16 +630,6 @@
             this.tbxFileTypes.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbxFileTypes.Size = new System.Drawing.Size(529, 191);
             this.tbxFileTypes.TabIndex = 10;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(2, 2);
-            this.label1.Margin = new System.Windows.Forms.Padding(2);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(112, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Registered File Types:";
             // 
             // tabDynamic
             // 
@@ -715,25 +792,6 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
-            // associationsTLPanel
-            // 
-            this.associationsTLPanel.ColumnCount = 1;
-            this.associationsTLPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.associationsTLPanel.Controls.Add(this.label1, 0, 0);
-            this.associationsTLPanel.Controls.Add(this.pnlURIs, 0, 3);
-            this.associationsTLPanel.Controls.Add(this.label2, 0, 2);
-            this.associationsTLPanel.Controls.Add(this.pnlFileTypes, 0, 1);
-            this.associationsTLPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.associationsTLPanel.Location = new System.Drawing.Point(0, 0);
-            this.associationsTLPanel.Name = "associationsTLPanel";
-            this.associationsTLPanel.RowCount = 4;
-            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 23F));
-            this.associationsTLPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.associationsTLPanel.Size = new System.Drawing.Size(535, 441);
-            this.associationsTLPanel.TabIndex = 14;
-            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -763,6 +821,7 @@
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
+            this.pnlTreeAssemblies.ResumeLayout(false);
             this.tabXapFileInformation.ResumeLayout(false);
             this.tabGeneralInfo.ResumeLayout(false);
             this.tabGeneralInfo.PerformLayout();
@@ -775,14 +834,14 @@
             this.pnlRequirements.ResumeLayout(false);
             this.pnlRequirements.PerformLayout();
             this.tabAssociations.ResumeLayout(false);
+            this.associationsTLPanel.ResumeLayout(false);
+            this.associationsTLPanel.PerformLayout();
             this.pnlURIs.ResumeLayout(false);
             this.pnlURIs.PerformLayout();
             this.pnlFileTypes.ResumeLayout(false);
             this.pnlFileTypes.PerformLayout();
             this.tabDynamic.ResumeLayout(false);
             this.tabDynamic.PerformLayout();
-            this.associationsTLPanel.ResumeLayout(false);
-            this.associationsTLPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -846,6 +905,10 @@
         private System.Windows.Forms.Panel pnlURIs;
         private System.Windows.Forms.TextBox tbxURIs;
         private System.Windows.Forms.TableLayoutPanel associationsTLPanel;
+        private System.Windows.Forms.CheckBox cbxIOFilter;
+        private System.Windows.Forms.Panel pnlTreeAssemblies;
+        private System.Windows.Forms.CheckBox cbxCryptoFilter;
+        private System.Windows.Forms.CheckBox cbxNetFilter;
 
     }
 }

@@ -30,7 +30,7 @@ namespace Tangerine.UI.BLL
 
         void InitializeAssemblyTree(IEnumerable<string> assemblies);
 
-        void SetTreeModel(TreeModel treeModel);
+        void SetTreeModel(AssemblyTreeModel treeModel);
 
         void SetExpanded(Node node);
 
