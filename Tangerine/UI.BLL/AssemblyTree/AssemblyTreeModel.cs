@@ -159,13 +159,15 @@ namespace Tangerine.UI.BLL
                     yield return node.Nodes.ElementAt(0);
                 else foreach (Node n in node.Nodes)
                 {
-                    var needToAdd = true;
-                    if (m_filterIO && !IsContainIO(n))
-                        needToAdd = false;
-                    if (needToAdd && m_filterNet && !IsContainNet(n))
-                        needToAdd = false;
-                    if (needToAdd && m_filterSecurity && !IsContainSecurity(n))
-                        needToAdd = false;
+                    var needToAdd = false;
+                    if (!m_filterIO && !m_filterNet && !m_filterSecurity)
+                        needToAdd = true;
+                    if (!needToAdd && m_filterIO && IsContainIO(n))
+                        needToAdd = true;
+                    if (!needToAdd && m_filterNet && IsContainNet(n))
+                        needToAdd = true;
+                    if (!needToAdd && m_filterSecurity && IsContainSecurity(n))
+                        needToAdd = true;
                     if (needToAdd)
                         yield return n;
                 }
