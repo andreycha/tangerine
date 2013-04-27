@@ -25,6 +25,12 @@ namespace Tangerine.BLL
         private readonly string m_assemblyPath;
         private readonly IHookProvider m_hookProvider;
         private readonly ICustomCodeGenerator m_codeGenerator;
+        private readonly List<string> m_typeDefsToExclude = new List<string>()
+        {
+            "<Module>", 
+            "<PrivateImplementationDetails>", 
+            "__StaticArrayInitTypeSize"
+        };
 
         private MethodReference m_refWritelnStr;
         private MethodReference m_refWritelnInt;
@@ -87,9 +93,7 @@ namespace Tangerine.BLL
 
             foreach (TypeDefinition typeDefinition in m_assemblyDefinition.MainModule.Types)
             {
-                if (typeDefinition.Name.StartsWith("<Module>")
-                    || typeDefinition.Name.StartsWith("<PrivateImplementationDetails>")
-                    || typeDefinition.Name.StartsWith("__StaticArrayInitTypeSize"))
+                if (ExcludeType(typeDefinition))
                 {
                     continue;
                 }
@@ -102,6 +106,18 @@ namespace Tangerine.BLL
             }
 
             AssemblyFactory.SaveAssembly(m_assemblyDefinition, m_assemblyPath);
+        }
+
+        private bool ExcludeType(TypeDefinition typeDefinition)
+        {
+            foreach (string typeToExclude in m_typeDefsToExclude)
+            {
+                if (typeDefinition.Name.StartsWith(typeToExclude))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private void PatchMethod(MethodDefinition methodDefinition, TypeDefinition typeDefinition, MethodHook methodHook)
