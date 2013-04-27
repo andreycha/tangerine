@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 
 namespace Tangerine.UI.BLL
 {
@@ -156,7 +155,9 @@ namespace Tangerine.UI.BLL
             Node node = FindNode(treePath);
 
             if (node != null)
-                foreach (Node n in node.Nodes)
+                if (treePath.FullPath.Length == 0 && node.Nodes.Count() == 1)
+                    yield return node.Nodes.ElementAt(0);
+                else foreach (Node n in node.Nodes)
                 {
                     var needToAdd = true;
                     if (m_filterIO && !IsContainIO(n))

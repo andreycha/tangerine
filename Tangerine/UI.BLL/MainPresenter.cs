@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,6 +20,7 @@ namespace Tangerine.UI.BLL
 
         private XAP m_xap;
         private List<MethodHook> m_hooks;
+        private AssemblyTreeModel m_treeModel;
 
         internal MainPresenter(IMainView view)
         {
@@ -46,9 +46,10 @@ namespace Tangerine.UI.BLL
                     ResetButton("deploy");
                     m_view.SetManifestInformation(m_xap);
 
-                    var treeModel = new AssemblyTreeModel();
+                    UnsubscribeTreeModelEvents();
+                    m_treeModel = new AssemblyTreeModel();
                     var rootNode = new Node(m_xap.Title);
-                    treeModel.Nodes.Add(rootNode);
+                    m_treeModel.Nodes.Add(rootNode);
 
                     foreach (var assembly in m_xap.Assemblies)
                     {
@@ -57,8 +58,12 @@ namespace Tangerine.UI.BLL
                         ProcessAssemblyNodeToTree(assemblyNode, assembly);
                     }
 
-                    m_view.SetTreeModel(treeModel);
+                    m_view.SetTreeModel(m_treeModel);
                     m_view.SetExpanded(rootNode);
+
+                    Thread.Sleep(50);
+
+                    SubscribeTreeModelEvents();
                 }
             ).ContinueWith(t =>
                 {
@@ -69,6 +74,37 @@ namespace Tangerine.UI.BLL
                 }, 
                 context
             );
+        }
+
+        private void OnTreeModelStructureChanged(object sender, TreePathEventArgs e)
+        {
+            var rootNode = m_treeModel.Root.Nodes.ElementAt(0);
+            m_view.SetExpanded(rootNode);
+            if (m_treeModel.FilterIO || m_treeModel.FilterNet || m_treeModel.FilterSecurity) {
+                ExpandAll(rootNode);
+            }
+            
+        }
+
+        private void ExpandAll(Node rootNode)
+        {
+            var path = m_treeModel.GetPath(rootNode);
+            var children = m_treeModel.GetChildren(path);
+            foreach (Node child in children) {
+                m_view.SetExpanded(child);
+                ExpandAll(child);
+            }
+        }
+
+        private void SubscribeTreeModelEvents()
+        {
+            m_treeModel.StructureChanged += OnTreeModelStructureChanged;
+        }
+
+        private void UnsubscribeTreeModelEvents()
+        {
+            if (m_treeModel != null)
+                m_treeModel.StructureChanged -= OnTreeModelStructureChanged;
         }
 
         private void HandleError(Exception exception)

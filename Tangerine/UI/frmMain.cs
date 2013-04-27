@@ -192,7 +192,8 @@ namespace Tangerine.UI
         private void SetExpandedInternal(Node node)
         {
             var treeNode = trvAssemblies.FindNode(m_TreeModel.GetPath(node));
-            treeNode.IsExpanded = true;
+            if (treeNode != null)
+                treeNode.IsExpanded = true;
         }
 
         public void SetTreeModel(AssemblyTreeModel treeModel)
