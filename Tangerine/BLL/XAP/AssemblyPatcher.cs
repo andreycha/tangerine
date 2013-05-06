@@ -6,6 +6,8 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using Tangerine.BLL.CustomCode;
 using Tangerine.BLL.Hooks;
+using Tangerine.Common;
+using Tangerine.Devices;
 using MethodBody = Mono.Cecil.Cil.MethodBody;
 
 namespace Tangerine.BLL
@@ -24,6 +26,8 @@ namespace Tangerine.BLL
         private readonly AssemblyDefinition m_assemblyDefinition;
         private readonly string m_assemblyPath;
         private readonly IHookProvider m_hookProvider;
+        private readonly DeviceType m_deviceType;
+        private readonly PlatformVersion m_version;
         private readonly ICustomCodeGenerator m_codeGenerator;
         private readonly List<string> m_typeDefsToExclude = new List<string>()
         {
@@ -38,13 +42,15 @@ namespace Tangerine.BLL
         private MethodReference m_refByteToString;
         private MethodReference m_refWritelnChar;
 
-        public AssemblyPatcher(string assemblyPath, IHookProvider hookProvider)
+        public AssemblyPatcher(string assemblyPath, IHookProvider hookProvider, DeviceType deviceType, PlatformVersion version)
         {
             AssemblyDefinition def = LoadAssembly(assemblyPath);
 
             m_assemblyDefinition = def;
             m_assemblyPath = assemblyPath;
             m_hookProvider = hookProvider;
+            m_deviceType = deviceType;
+            m_version = version;
             // TODO: dependency
             m_codeGenerator = new CustomCodeGenerator();
 
@@ -306,10 +312,34 @@ namespace Tangerine.BLL
                 "*Type: " + typeDefinition.FullName + ", Method name: " + methodDefinition.Name
                 );
             body.CilWorker.InsertBefore(firstInstruction, varMethodName);
-            Instruction logMethodName = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
-            body.CilWorker.InsertBefore(firstInstruction, logMethodName);
+            LogText(body, firstInstruction);
 
             return firstInstruction;
+        }
+
+        private void LogText(MethodBody body, Instruction insertBefore)
+        {
+            switch (m_deviceType)
+            {
+                case DeviceType.Device:
+                    // TODO: log value to file
+                    break;
+
+                case DeviceType.Emulator:
+                    if (m_version == PlatformVersion.Version71)
+                    {
+                        Instruction logText = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
+                        body.CilWorker.InsertBefore(insertBefore, logText);
+                    }
+                    else
+                    {
+                        // TODO: log value to file
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException(m_deviceType.ToString());
+            }
         }
 
         private void LogMethodParameters(MethodDefinition methodDefinition, Instruction targetInstruction)
@@ -334,8 +364,7 @@ namespace Tangerine.BLL
         {
             Instruction varParamName = body.CilWorker.Create(OpCodes.Ldstr, "*Parameter name: " + parameterName);
             body.CilWorker.InsertBefore(targetInstruction, varParamName);
-            Instruction logParamName = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
-            body.CilWorker.InsertBefore(targetInstruction, logParamName);
+            LogText(body, targetInstruction);
         }
 
         private void LogParameterValue(MethodBody body, ParameterDefinition parameter, Instruction targetInstruction)
@@ -346,6 +375,30 @@ namespace Tangerine.BLL
         }
 
         private void LogValue(MethodBody body, TypeReference valueType, Instruction targetInstruction)
+        {
+            switch (m_deviceType)
+            {
+                case DeviceType.Device:
+                    // TODO: log value to file
+                    break;
+
+                case DeviceType.Emulator:
+                    if (m_version == PlatformVersion.Version71)
+                    {
+                        LogValueToConsole(body, valueType, targetInstruction);
+                    }
+                    else
+                    {
+                        // TODO: log value to file
+                    }
+                    break;
+
+                default:
+                    throw new NotSupportedException(m_deviceType.ToString());
+            }
+        }
+
+        private void LogValueToConsole(MethodBody body, TypeReference valueType, Instruction targetInstruction)
         {
             switch (valueType.Name)
             {

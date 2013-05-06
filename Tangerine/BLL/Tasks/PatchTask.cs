@@ -64,7 +64,7 @@ namespace Tangerine.BLL.Tasks
                 {
                     AssemblyName.GetAssemblyName(asmPath);
                     m_addText.Invoke("Patching " + asm.AssemblyPath);
-                    AssemblyPatcher patcher = new AssemblyPatcher(asmPath, m_hookProvider);
+                    AssemblyPatcher patcher = new AssemblyPatcher(asmPath, m_hookProvider, m_deviceType, m_xap.PlatformVersion);
                     patcher.PatchAssembly();
                 }
                 catch (BadImageFormatException)
