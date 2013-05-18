@@ -35,12 +35,16 @@ namespace Tangerine.BLL
             "<PrivateImplementationDetails>", 
             "__StaticArrayInitTypeSize"
         };
+        private readonly string m_logFileName = "Tangerine_log.txt";
 
         private MethodReference m_refWritelnStr;
         private MethodReference m_refWritelnInt;
         private MethodReference m_refWritelnObj;
         private MethodReference m_refByteToString;
         private MethodReference m_refWritelnChar;
+        private MethodReference m_logTextToFile;
+
+        private TypeReference m_stringTypeReference;
 
         public AssemblyPatcher(string assemblyPath, IHookProvider hookProvider, DeviceType deviceType, PlatformVersion version)
         {
@@ -55,6 +59,8 @@ namespace Tangerine.BLL
             m_codeGenerator = new CustomCodeGenerator();
 
             InitializeConsoleMethods();
+
+            m_stringTypeReference = m_assemblyDefinition.MainModule.Import(typeof(string));
         }
 
         private AssemblyDefinition LoadAssembly(string assemblyPath)
@@ -120,10 +126,10 @@ namespace Tangerine.BLL
             {
                 if (typeDefinition.Name.StartsWith(typeToExclude))
                 {
-                    return false;
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
 
         private void PatchMethod(MethodDefinition methodDefinition, TypeDefinition typeDefinition, MethodHook methodHook)
@@ -186,7 +192,7 @@ namespace Tangerine.BLL
             }
             if (generatedTypeCtor == null)
             {
-                throw new InvalidOperationException("Default constructor was on found on generated assembly");
+                throw new InvalidOperationException("Default constructor was not found in generated assembly");
             }
 
             // inject call
@@ -311,35 +317,60 @@ namespace Tangerine.BLL
                 OpCodes.Ldstr,
                 "*Type: " + typeDefinition.FullName + ", Method name: " + methodDefinition.Name
                 );
-            body.CilWorker.InsertBefore(firstInstruction, varMethodName);
-            LogText(body, firstInstruction);
+            LogText(varMethodName, body, firstInstruction);
 
             return firstInstruction;
         }
 
-        private void LogText(MethodBody body, Instruction insertBefore)
+        private void LogText(Instruction textInstruction, MethodBody body, Instruction insertBefore)
         {
             switch (m_deviceType)
             {
                 case DeviceType.Device:
-                    // TODO: log value to file
+                    LogTextToFile(textInstruction, body, insertBefore);
                     break;
 
                 case DeviceType.Emulator:
                     if (m_version == PlatformVersion.Version71)
                     {
-                        Instruction logText = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
-                        body.CilWorker.InsertBefore(insertBefore, logText);
+                        LogTextToConsole(textInstruction, body, insertBefore);
                     }
                     else
                     {
-                        // TODO: log value to file
+                        LogTextToFile(textInstruction, body, insertBefore);
                     }
                     break;
 
                 default:
                     throw new NotSupportedException(m_deviceType.ToString());
             }
+        }
+
+        private void LogTextToFile(Instruction textInstruction, MethodBody body, Instruction insertBefore)
+        {
+            body.CilWorker.InsertBefore(insertBefore, textInstruction);
+
+            Instruction loadFileName = body.CilWorker.Create(OpCodes.Ldstr, m_logFileName);
+            body.CilWorker.InsertBefore(insertBefore, loadFileName);
+
+            if (m_logTextToFile == null)
+            {
+                string helperAssemblyPath = Path.Combine(Path.GetDirectoryName(m_assemblyPath), WindowsPhoneHelper.LibraryName);
+                AssemblyDefinition helperAssembly = LoadAssembly(helperAssemblyPath);
+                var classDef = helperAssembly.MainModule.Types.Cast<TypeDefinition>().First(t => t.Name == WindowsPhoneHelper.ClassName);
+                var logMethodDefinition = classDef.Methods.Cast<MethodDefinition>().First(m => m.Name == WindowsPhoneHelper.MethodName);
+                m_logTextToFile = m_assemblyDefinition.MainModule.Import(logMethodDefinition);
+            }
+
+            Instruction logToFile = body.CilWorker.Create(OpCodes.Call, m_logTextToFile);
+            body.CilWorker.InsertBefore(insertBefore, logToFile);
+        }
+
+        private void LogTextToConsole(Instruction textInstruction, MethodBody body, Instruction insertBefore)
+        {
+            body.CilWorker.InsertBefore(insertBefore, textInstruction);
+            Instruction logText = body.CilWorker.Create(OpCodes.Call, m_refWritelnStr);
+            body.CilWorker.InsertBefore(insertBefore, logText);
         }
 
         private void LogMethodParameters(MethodDefinition methodDefinition, Instruction targetInstruction)
@@ -364,7 +395,7 @@ namespace Tangerine.BLL
         {
             Instruction varParamName = body.CilWorker.Create(OpCodes.Ldstr, "*Parameter name: " + parameterName);
             body.CilWorker.InsertBefore(targetInstruction, varParamName);
-            LogText(body, targetInstruction);
+            LogText(varParamName, body, targetInstruction);
         }
 
         private void LogParameterValue(MethodBody body, ParameterDefinition parameter, Instruction targetInstruction)

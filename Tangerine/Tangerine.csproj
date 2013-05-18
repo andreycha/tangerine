@@ -78,6 +78,7 @@
     <Compile Include="BLL\Devices\DeviceType.cs" />
     <Compile Include="BLL\Devices\DeviceRetriever.cs" />
     <Compile Include="BLL\MethodDefinitionExtension.cs" />
+    <Compile Include="BLL\WindowsPhoneHelper.cs" />
     <Compile Include="BLL\XAP\Requirement.cs" />
     <Compile Include="Common\PlatformVersion.cs" />
     <Compile Include="BLL\XAP\XAP.cs" />

@@ -83,10 +83,7 @@ namespace Tangerine.BLL.Tasks
 
             InstallApplication(newFileName);
 
-            if (m_deviceType == DeviceType.Emulator)
-            {
-                RunXDEMonitor();
-            }
+            RunXDEMonitor();
 
             m_resetButton.Invoke("run");
         }
@@ -114,6 +111,11 @@ namespace Tangerine.BLL.Tasks
                 string target = GetInstrumentedFilePath(file);
                 File.Copy(file, target, true);
             }
+
+            File.Copy(
+                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, WindowsPhoneHelper.LibraryName), 
+                GetInstrumentedFilePath(WindowsPhoneHelper.LibraryName)
+                );
         }
 
         private string GetInstrumentedXAPPath()
