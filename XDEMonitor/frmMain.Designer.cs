@@ -41,6 +41,7 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rtbConsole = new System.Windows.Forms.RichTextBox();
             this.btnClear = new System.Windows.Forms.Button();
+            this.btnGetLog = new System.Windows.Forms.Button();
             this.menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -169,6 +170,19 @@
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
+            // btnGetLog
+            // 
+            this.btnGetLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGetLog.Location = new System.Drawing.Point(542, 417);
+            this.btnGetLog.Margin = new System.Windows.Forms.Padding(2);
+            this.btnGetLog.Name = "btnGetLog";
+            this.btnGetLog.Size = new System.Drawing.Size(58, 23);
+            this.btnGetLog.TabIndex = 1;
+            this.btnGetLog.Text = "Get log";
+            this.btnGetLog.UseVisualStyleBackColor = true;
+            this.btnGetLog.Visible = false;
+            this.btnGetLog.Click += new System.EventHandler(this.btnGetLog_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -179,6 +193,7 @@
             this.Controls.Add(this.textSearchStr);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.labelMsg);
+            this.Controls.Add(this.btnGetLog);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.menu);
@@ -206,6 +221,7 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.RichTextBox rtbConsole;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.Button btnGetLog;
     }
 }
 

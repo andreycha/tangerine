@@ -30,13 +30,27 @@ namespace XDEMonitor
         public frmMain()
         {
             InitializeComponent();
+            ReadCommandLineArgs();
+            if (deviceType == DeviceType.Emulator && platformVersion == PlatformVersion.Version71)
+            {
+                StartConsoleMonitoring();
+            }
+            else
+            {
+                btnStop.Visible = false;
+                btnGetLog.Location = btnStop.Location;
+                btnGetLog.Visible = true;
+            }
+        }
+
+        private void StartConsoleMonitoring()
+        {
             RemoteHooking.IpcCreateServer<HookInterface>(ref channelName, WellKnownObjectMode.Singleton);
             if (!InjectDll())
             {
                 Application.Exit();
             }
             timer_Tick(null, null);
-            ReadCommandLineArgs();
         }
 
         public bool InjectDll()
@@ -276,6 +290,21 @@ namespace XDEMonitor
         private void btnClear_Click(object sender, EventArgs e)
         {
             rtbConsole.Clear();
+        }
+
+        private void btnGetLog_Click(object sender, EventArgs e)
+        {
+            rtbConsole.Clear();
+
+            string targetFileName = String.Format("{0}.txt", appID.ToString());
+
+            var device = new DeviceRetriever().GetDevice(deviceType, platformVersion);
+            device.ReceiveFile(appID, "Tangerine_log.txt", targetFileName);
+
+            using (var stream = File.OpenText(targetFileName))
+            {
+                rtbConsole.Text = stream.ReadToEnd();
+            }
         }
     }
 }
