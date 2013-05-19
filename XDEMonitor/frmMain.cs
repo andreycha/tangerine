@@ -295,16 +295,34 @@ namespace XDEMonitor
         private void btnGetLog_Click(object sender, EventArgs e)
         {
             rtbConsole.Clear();
+            btnGetLog.Enabled = false;
 
-            string targetFileName = String.Format("{0}.txt", appID.ToString());
+            rtbConsole.Text = String.Join(Environment.NewLine, GetLog());
+
+            btnGetLog.Enabled = true;
+        }
+
+        private string[] GetLog()
+        {
+            List<string> log = new List<string>();
 
             var device = new DeviceRetriever().GetDevice(deviceType, platformVersion);
-            device.ReceiveFile(appID, "Tangerine_log.txt", targetFileName);
-
-            using (var stream = File.OpenText(targetFileName))
+            device.Connect();
+            if (device.IsApplicationInstalled(appID))
             {
-                rtbConsole.Text = stream.ReadToEnd();
+                string targetFileName = String.Format("{0}.txt", appID.ToString());
+                device.ReceiveFile(appID, "Tangerine_log.txt", targetFileName);
+                using (var stream = File.OpenText(targetFileName))
+                {
+                    while (!stream.EndOfStream)
+                    {
+                        log.Add(stream.ReadLine());
+                    }
+                }
             }
+            device.Disconnect();
+
+            return log.ToArray();
         }
     }
 }
