@@ -168,17 +168,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="1352152419_ball-1x1.ico" />
-    <None Include="Resources\enum.png" />
-    <None Include="Resources\class.png" />
-    <None Include="Resources\method.png" />
-    <None Include="Resources\property.png" />
-    <None Include="Resources\assembly.png" />
-    <None Include="Resources\security.png" />
-    <None Include="Resources\network.png" />
-    <None Include="Resources\file.png" />
-    <Content Include="EasyHook.XML">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="EasyHook32.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -191,6 +180,14 @@
     <Content Include="EasyHook64Svc.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\enum.png" />
+    <None Include="Resources\class.png" />
+    <None Include="Resources\method.png" />
+    <None Include="Resources\property.png" />
+    <None Include="Resources\assembly.png" />
+    <None Include="Resources\security.png" />
+    <None Include="Resources\network.png" />
+    <None Include="Resources\file.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Tangerine.Common\Tangerine.Common.csproj">
