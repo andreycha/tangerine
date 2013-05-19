@@ -216,33 +216,39 @@ namespace Tangerine.BLL.Tasks
 
             Guid appGUID = new Guid(m_xap.ProductId);
 
-            WPDevice emulator = new DeviceRetriever().GetDevice(m_deviceType, m_xap.PlatformVersion);
-            emulator.Connect();
-            UninstallApplication(emulator, appGUID);
+            WPDevice device = new DeviceRetriever().GetDevice(m_deviceType, m_xap.PlatformVersion);
+            device.Connect();
+            UninstallApplication(device, appGUID);
             m_addText.Invoke("(Done)");
 
             m_addText.Invoke("Deploying application...");
 
-            emulator.InstallApplication(appGUID, appGUID, NormalAppGenre, m_xap.IconPath, newFileName);
-            emulator.Disconnect();
+            device.InstallApplication(appGUID, appGUID, NormalAppGenre, m_xap.IconPath, newFileName);
+            device.Disconnect();
 
             m_addText.Invoke("(Done)");
         }
 
-        private void UninstallApplication(WPDevice emulator, Guid appGUID)
+        private void UninstallApplication(WPDevice device, Guid appGUID)
         {
-            if (emulator.IsApplicationInstalled(appGUID))
+            if (device.IsApplicationInstalled(appGUID))
             {
                 m_addText.Invoke("(Done)");
                 m_addText.Invoke("Uninstalling previous version...");
-                emulator.UninstallApplication(appGUID);
+                device.UninstallApplication(appGUID);
             }
         }
 
-        public void RunXDEMonitor()
+        private void RunXDEMonitor()
         {
             Process processObj = new Process();
             processObj.StartInfo.FileName = "XDEMonitor.exe";
+            processObj.StartInfo.Arguments = String.Format(
+                "{0} {1} {2}", 
+                m_xap.ProductId, 
+                m_deviceType.ToString(), 
+                m_xap.PlatformVersion.ToString()
+                );
             processObj.Start();
 
             m_addText.Invoke("Running XDE Monitor...");
