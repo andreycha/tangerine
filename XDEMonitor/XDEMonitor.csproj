@@ -126,6 +126,16 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tangerine.Common\Tangerine.Common.csproj">
+      <Project>{6cbf4f19-e387-460c-a388-89fa1a948720}</Project>
+      <Name>Tangerine.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tangerine.Devices\Tangerine.Devices.csproj">
+      <Project>{6e79f38a-f564-4a24-8276-2682cb29e227}</Project>
+      <Name>Tangerine.Devices</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetPath)" "$(SolutionDir)Tangerine\$(OutDir)" /y</PostBuildEvent>

@@ -7,6 +7,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using EasyHook;
+using Tangerine.Common;
+using Tangerine.Devices;
 
 namespace XDEMonitor
 {
@@ -14,6 +16,10 @@ namespace XDEMonitor
     {
         internal static Queue<MonitorEntry> monitorQueue = new Queue<MonitorEntry>();
         internal static bool isMonitoring = true;
+
+        private Guid appID;
+        private DeviceType deviceType;
+        private PlatformVersion platformVersion;
 
         private string channelName = null;
         private Regex methodRegex = new Regex("(\\*Type: )(?<type>.+), (Method name: )(?<method>.+)");
@@ -30,6 +36,7 @@ namespace XDEMonitor
                 Application.Exit();
             }
             timer_Tick(null, null);
+            ReadCommandLineArgs();
         }
 
         public bool InjectDll()
@@ -55,6 +62,15 @@ namespace XDEMonitor
             labelMsg.Text = "API hook status: Successfull, PID=" + pid.ToString();
 
             return true;
+        }
+
+        private void ReadCommandLineArgs()
+        {
+            string[] args = Environment.GetCommandLineArgs();
+
+            appID = new Guid(args[1]);
+            deviceType = (DeviceType)Enum.Parse(typeof(DeviceType), args[2]);
+            platformVersion = (PlatformVersion)Enum.Parse(typeof(PlatformVersion), args[3]);
         }
 
         private void timer_Tick(object sender, EventArgs e)
