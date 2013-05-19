@@ -4,7 +4,6 @@ using System.IO;
 using System.Reflection;
 using ICSharpCode.SharpZipLib.Core;
 using ICSharpCode.SharpZipLib.Zip;
-using Tangerine.BLL.Devices;
 using Tangerine.BLL.Hooks;
 using Tangerine.Devices;
 

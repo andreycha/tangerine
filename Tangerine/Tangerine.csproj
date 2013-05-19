@@ -71,25 +71,18 @@
   <ItemGroup>
     <Compile Include="BLL\CustomCode\CustomCodeGenerator.cs" />
     <Compile Include="BLL\CustomCode\ICustomCodeGenerator.cs" />
-    <Compile Include="BLL\Devices\WP8Device.cs" />
     <Compile Include="BLL\Hooks\HookProvider.cs" />
     <Compile Include="BLL\Hooks\IHookProvider.cs" />
     <Compile Include="BLL\Hooks\MethodHook.cs" />
-    <Compile Include="BLL\Devices\DeviceType.cs" />
-    <Compile Include="BLL\Devices\DeviceRetriever.cs" />
     <Compile Include="BLL\MethodDefinitionExtension.cs" />
     <Compile Include="BLL\WindowsPhoneHelper.cs" />
     <Compile Include="BLL\XAP\Requirement.cs" />
-    <Compile Include="Common\PlatformVersion.cs" />
     <Compile Include="BLL\XAP\XAP.cs" />
     <Compile Include="BLL\XAP\XAPAssembly.cs" />
     <Compile Include="BLL\XAP\AssemblyPatcher.cs" />
     <Compile Include="BLL\XAP\Capability.cs" />
     <Compile Include="BLL\XAP\FileInfoEventArgs.cs" />
     <Compile Include="BLL\XAP\ManifestReader.cs" />
-    <Compile Include="BLL\Devices\WPDevice.cs" />
-    <Compile Include="Common\ScreenResolution.cs" />
-    <Compile Include="Common\Util.cs" />
     <Compile Include="UI.BLL\AssemblyTree\AssemblyTreeModel.cs" />
     <Compile Include="UI.BLL\AssemblyTree\MethodNode.cs" />
     <Compile Include="UI.BLL\AssemblyTree\PropertyNode.cs" />
@@ -198,6 +191,16 @@
     <Content Include="EasyHook64Svc.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tangerine.Common\Tangerine.Common.csproj">
+      <Project>{6cbf4f19-e387-460c-a388-89fa1a948720}</Project>
+      <Name>Tangerine.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tangerine.Devices\Tangerine.Devices.csproj">
+      <Project>{6e79f38a-f564-4a24-8276-2682cb29e227}</Project>
+      <Name>Tangerine.Devices</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
