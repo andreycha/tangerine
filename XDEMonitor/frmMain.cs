@@ -93,122 +93,136 @@ namespace XDEMonitor
 
             try
             {
-                lock (monitorQueue)
+                var logEntries = GetLogEntriesFromConsole();
+                ProcessLogEntries(logEntries);
+            }
+            finally
+            {
+                timer.Start();
+            }
+        }
+
+        private List<MonitorEntry> GetLogEntriesFromConsole()
+        {
+            var logEntries = new List<MonitorEntry>();
+            lock (monitorQueue)
+            {
+                while (monitorQueue.Count > 0)
                 {
-                    StringBuilder item = null;
-                    string strParameters = "";
-                    string strReturnValue = "";
-                    bool isDumpingVariables = false;
-                    bool isDumpingReturnValue = false;
+                    logEntries.Add(monitorQueue.Dequeue());
+                }
+            }
+            return logEntries;
+        }
 
-                    while (monitorQueue.Count > 0)
-                    {
-                        MonitorEntry entry = monitorQueue.Dequeue();
+        private void ProcessLogEntries(List<MonitorEntry> logEntries)
+        {
+            StringBuilder item = null;
+            string strParameters = "";
+            string strReturnValue = "";
+            bool isDumpingVariables = false;
+            bool isDumpingReturnValue = false;
 
-                        // beginning of method dump
-                        if (methodRegex.IsMatch(entry.WriteBuffer))
-                        {
-                            if (item != null)
-                            {
-                                if (isDumpingVariables)
-                                {
-                                    item.AppendFormat("({0})", strParameters);
-                                    // close previous method dump
-                                    isDumpingVariables = false;
-                                    strParameters = "";
-                                }
-                                if (isDumpingReturnValue)
-                                {
-                                    item.Append(strReturnValue);
-                                    // close previous method dump
-                                    isDumpingReturnValue = false;
-                                    strReturnValue = "";
-                                }
-                                item.AppendLine();
-                                rtbConsole.AppendText(item.ToString());
-                                rtbConsole.ScrollToCaret();
-                            }
-
-                            item = new StringBuilder().AppendFormat("[{0}] ", entry.TimeStamp.ToLongTimeString());
-
-                            Match match = methodRegex.Match(entry.WriteBuffer);
-                            string strType = GetCleanString(match.Groups["type"].ToString());
-                            item.Append(strType).Append(".");
-
-                            string strMethodName = GetCleanString(match.Groups["method"].ToString());
-                            item.Append(strMethodName);                            
-                        }
-                        // beginning of var name
-                        else if (paramRegex.IsMatch(entry.WriteBuffer))
-                        {
-                            Match match = paramRegex.Match(entry.WriteBuffer);
-                            if (!String.IsNullOrEmpty(strParameters))
-                            {
-                                strParameters += ", ";
-                            }
-                            strParameters += GetCleanString(match.Groups["varname"].ToString()) + ": ";
-                            isDumpingVariables = true;
-                        }
-                        else if (returnRegex.IsMatch(entry.WriteBuffer))
-                        {
-                            if (item != null)
-                            {
-                                if (isDumpingVariables)
-                                {
-                                    item.AppendFormat("({0})", strParameters);
-                                    // close previous parameters dump
-                                    isDumpingVariables = false;
-                                    strParameters = "";
-                                }
-                                if (isDumpingReturnValue)
-                                {
-                                    item.Append(strReturnValue);
-                                    // close previous return dump
-                                    strReturnValue = "";
-                                }
-                                item.AppendLine();
-                                rtbConsole.AppendText(item.ToString());
-                                rtbConsole.ScrollToCaret();
-                            }
-
-                            isDumpingVariables = false;
-                            isDumpingReturnValue = true;
-                            Match match = returnRegex.Match(entry.WriteBuffer);
-
-                            item = new StringBuilder();
-                            item.AppendFormat("\tRETURN VALUE ({0}): ", GetCleanString(match.Groups["method"].ToString()));
-                        }
-                        else if (isDumpingVariables)
-                        {
-                            Match match = valueRegex.Match(entry.WriteBuffer);
-                            strParameters += GetCleanString(match.Groups["var"].ToString());
-                        }
-                        else if (isDumpingReturnValue)
-                        {
-                            Match match = valueRegex.Match(entry.WriteBuffer);
-                            strReturnValue += GetCleanString(match.Groups["var"].ToString());
-                        }
-                    }
-
+            foreach (var entry in logEntries)
+            {
+                // beginning of method dump
+                if (methodRegex.IsMatch(entry.WriteBuffer))
+                {
                     if (item != null)
                     {
                         if (isDumpingVariables)
                         {
                             item.AppendFormat("({0})", strParameters);
+                            // close previous method dump
+                            isDumpingVariables = false;
+                            strParameters = "";
                         }
                         if (isDumpingReturnValue)
                         {
                             item.Append(strReturnValue);
+                            // close previous method dump
+                            isDumpingReturnValue = false;
+                            strReturnValue = "";
                         }
                         item.AppendLine();
                         rtbConsole.AppendText(item.ToString());
                         rtbConsole.ScrollToCaret();
                     }
+
+                    item = new StringBuilder().AppendFormat("[{0}] ", entry.TimeStamp.ToLongTimeString());
+
+                    Match match = methodRegex.Match(entry.WriteBuffer);
+                    string strType = GetCleanString(match.Groups["type"].ToString());
+                    item.Append(strType).Append(".");
+
+                    string strMethodName = GetCleanString(match.Groups["method"].ToString());
+                    item.Append(strMethodName);
+                }
+                // beginning of var name
+                else if (paramRegex.IsMatch(entry.WriteBuffer))
+                {
+                    Match match = paramRegex.Match(entry.WriteBuffer);
+                    if (!String.IsNullOrEmpty(strParameters))
+                    {
+                        strParameters += ", ";
+                    }
+                    strParameters += GetCleanString(match.Groups["varname"].ToString()) + ": ";
+                    isDumpingVariables = true;
+                }
+                else if (returnRegex.IsMatch(entry.WriteBuffer))
+                {
+                    if (item != null)
+                    {
+                        if (isDumpingVariables)
+                        {
+                            item.AppendFormat("({0})", strParameters);
+                            // close previous parameters dump
+                            isDumpingVariables = false;
+                            strParameters = "";
+                        }
+                        if (isDumpingReturnValue)
+                        {
+                            item.Append(strReturnValue);
+                            // close previous return dump
+                            strReturnValue = "";
+                        }
+                        item.AppendLine();
+                        rtbConsole.AppendText(item.ToString());
+                        rtbConsole.ScrollToCaret();
+                    }
+
+                    isDumpingVariables = false;
+                    isDumpingReturnValue = true;
+                    Match match = returnRegex.Match(entry.WriteBuffer);
+
+                    item = new StringBuilder();
+                    item.AppendFormat("\tRETURN VALUE ({0}): ", GetCleanString(match.Groups["method"].ToString()));
+                }
+                else if (isDumpingVariables)
+                {
+                    Match match = valueRegex.Match(entry.WriteBuffer);
+                    strParameters += GetCleanString(match.Groups["var"].ToString());
+                }
+                else if (isDumpingReturnValue)
+                {
+                    Match match = valueRegex.Match(entry.WriteBuffer);
+                    strReturnValue += GetCleanString(match.Groups["var"].ToString());
                 }
             }
-            finally
+
+            if (item != null)
             {
-                timer.Start();
+                if (isDumpingVariables)
+                {
+                    item.AppendFormat("({0})", strParameters);
+                }
+                if (isDumpingReturnValue)
+                {
+                    item.Append(strReturnValue);
+                }
+                item.AppendLine();
+                rtbConsole.AppendText(item.ToString());
+                rtbConsole.ScrollToCaret();
             }
         }
 
@@ -297,14 +311,20 @@ namespace XDEMonitor
             rtbConsole.Clear();
             btnGetLog.Enabled = false;
 
-            rtbConsole.Text = String.Join(Environment.NewLine, GetLog());
-
-            btnGetLog.Enabled = true;
+            try
+            {
+                var logEntries = GetLogEntriesFromFile();
+                ProcessLogEntries(logEntries);
+            }
+            finally
+            {
+                btnGetLog.Enabled = true;
+            }
         }
 
-        private string[] GetLog()
+        private List<MonitorEntry> GetLogEntriesFromFile()
         {
-            List<string> log = new List<string>();
+            var logEntries = new List<MonitorEntry>();
 
             var device = new DeviceRetriever().GetDevice(deviceType, platformVersion);
             device.Connect();
@@ -316,13 +336,13 @@ namespace XDEMonitor
                 {
                     while (!stream.EndOfStream)
                     {
-                        log.Add(stream.ReadLine());
+                        logEntries.Add(new MonitorEntry(stream.ReadLine()));
                     }
                 }
             }
             device.Disconnect();
 
-            return log.ToArray();
+            return logEntries;
         }
     }
 }
