@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -74,6 +75,20 @@ namespace Tangerine.Devices
         {
             var connectMethod = Device.GetType().GetMethod("Disconnect");
             connectMethod.Invoke(Device, new object[0]);
+        }
+
+        public virtual void ReceiveFile(Guid productId, string sourceFile, string targetPath)
+        {
+            // get app
+            var getAppMethod = Device.GetType().GetMethod("GetApplication");
+            var app = getAppMethod.Invoke(Device, new object[] { productId });
+            // get isolated store
+            var getIsolatedStoreMethod = app.GetType().GetMethod("GetIsolatedStore");
+            var isolatedStore = getIsolatedStoreMethod.Invoke(app, new object[0]);
+            // receive file
+            var receiveFileMethod = isolatedStore.GetType().GetMethod("ReceiveFile");
+            sourceFile = Path.DirectorySeparatorChar + sourceFile;
+            receiveFileMethod.Invoke(isolatedStore, new object[] { sourceFile, targetPath, true });
         }
     }
 }
