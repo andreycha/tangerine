@@ -316,6 +316,19 @@ namespace XDEMonitor
                 var logEntries = GetLogEntriesFromFile();
                 ProcessLogEntries(logEntries);
             }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show(
+                    "Log file was not found. Make sure you ran application.", 
+                    "Error", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Error
+                    );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             finally
             {
                 btnGetLog.Enabled = true;
