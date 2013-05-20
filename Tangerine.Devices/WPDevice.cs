@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using Tangerine.Common;
 
 namespace Tangerine.Devices
 {
@@ -32,59 +34,71 @@ namespace Tangerine.Devices
         public virtual void Connect()
         {
             var connectMethod = Device.GetType().GetMethod("Connect");
-            connectMethod.Invoke(Device, new object[0]);
+            InvokeMethod(connectMethod, Device, new object[0]);
+        }
+
+        protected object InvokeMethod(MethodInfo method, object obj, params object[] parameters)
+        {
+            try
+            {
+                return method.Invoke(obj, parameters);
+            }
+            catch (TargetInvocationException e)
+            {
+                throw ExceptionHelper.GetRealExceptionWithStackTrace(e);
+            }
         }
 
         public virtual void InstallApplication(Guid productId, Guid instanceId, string applicationGenre, string iconPath, string xapPackage)
         {
             var installMethod = Device.GetType().GetMethod("InstallApplication");
-            installMethod.Invoke(Device, new object[] { productId, instanceId, applicationGenre, iconPath, xapPackage });
+            InvokeMethod(installMethod, Device, new object[] { productId, instanceId, applicationGenre, iconPath, xapPackage });
         }
 
         public virtual void LaunchApplication(Guid productId)
         {
             // get app
             var getAppMethod = Device.GetType().GetMethod("GetApplication");
-            var app = getAppMethod.Invoke(Device, new object[] { productId });
+            var app = InvokeMethod(getAppMethod, Device, new object[] { productId });
             // launch it
             var launchMethod = app.GetType().GetMethod("Launch");
-            launchMethod.Invoke(app, new object[0]);
+            InvokeMethod(launchMethod, app, new object[0]);
         }
 
         public virtual bool IsApplicationInstalled(Guid productId)
         {
             var isAppInstalledMethod = Device.GetType().GetMethod("IsApplicationInstalled");
-            return (bool)isAppInstalledMethod.Invoke(Device, new object[] { productId });
+            return (bool)InvokeMethod(isAppInstalledMethod, Device, new object[] { productId });
         }
 
         public virtual void UninstallApplication(Guid productId)
         {
             // get app
             var getAppMethod = Device.GetType().GetMethod("GetApplication");
-            var app = getAppMethod.Invoke(Device, new object[] { productId });
+            var app = InvokeMethod(getAppMethod, Device, new object[] { productId });
             // uninstall it
             var uninstallMethod = app.GetType().GetMethod("Uninstall");
-            uninstallMethod.Invoke(app, new object[0]);
+            InvokeMethod(uninstallMethod, app, new object[0]);
         }
 
         public virtual void Disconnect()
         {
-            var connectMethod = Device.GetType().GetMethod("Disconnect");
-            connectMethod.Invoke(Device, new object[0]);
+            var disconnectMethod = Device.GetType().GetMethod("Disconnect");
+            InvokeMethod(disconnectMethod, Device, new object[0]);
         }
 
         public virtual void ReceiveFile(Guid productId, string sourceFile, string targetPath)
         {
             // get app
             var getAppMethod = Device.GetType().GetMethod("GetApplication");
-            var app = getAppMethod.Invoke(Device, new object[] { productId });
+            var app = InvokeMethod(getAppMethod, Device, new object[] { productId });
             // get isolated store
             var getIsolatedStoreMethod = app.GetType().GetMethod("GetIsolatedStore");
-            var isolatedStore = getIsolatedStoreMethod.Invoke(app, new object[0]);
+            var isolatedStore = InvokeMethod(getIsolatedStoreMethod, app, new object[0]);
             // receive file
             var receiveFileMethod = isolatedStore.GetType().GetMethod("ReceiveFile");
             sourceFile = Path.DirectorySeparatorChar + sourceFile;
-            receiveFileMethod.Invoke(isolatedStore, new object[] { sourceFile, targetPath, true });
+            InvokeMethod(receiveFileMethod, isolatedStore, new object[] { sourceFile, targetPath, true });
         }
     }
 }

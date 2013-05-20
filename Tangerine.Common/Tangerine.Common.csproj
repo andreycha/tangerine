@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExceptionHelper.cs" />
     <Compile Include="PlatformVersion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenResolution.cs" />

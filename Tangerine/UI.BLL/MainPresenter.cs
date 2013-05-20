@@ -10,6 +10,7 @@ using Mono.Cecil;
 using Tangerine.BLL;
 using Tangerine.BLL.Hooks;
 using Tangerine.BLL.Tasks;
+using Tangerine.Common;
 using Tangerine.Devices;
 
 namespace Tangerine.UI.BLL
@@ -112,25 +113,13 @@ namespace Tangerine.UI.BLL
             var targetInvocationException = exception as TargetInvocationException;
             if (targetInvocationException != null)
             {
-                m_view.ShowError(GetRealExceptionWithStackTrace(targetInvocationException));
+                m_view.ShowError(ExceptionHelper.GetRealExceptionWithStackTrace(targetInvocationException));
             }
             else
             {
                 m_view.ShowError(exception);
             }
             m_view.ResetButton("run");
-        }
-
-        private Exception GetRealExceptionWithStackTrace(TargetInvocationException tiex)
-        {
-            var remoteStackTraceString = typeof(Exception).GetField("_remoteStackTraceString", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            remoteStackTraceString.SetValue(
-                tiex.InnerException,
-                tiex.StackTrace + Environment.NewLine
-                );
-
-            return tiex.InnerException;
         }
 
         private void ProcessAssemblyNodeToTree(Node assemblyNode, XAPAssembly assembly)

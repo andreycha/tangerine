@@ -18,9 +18,9 @@ namespace Tangerine.Devices
             {
                 base.Connect();
             }
-            catch (TargetInvocationException e)
+            catch (Exception e)
             {
-                if (e.InnerException.Message.Contains(EmulatorLaunchError))
+                if (e.Message.Contains(EmulatorLaunchError))
                 {
                     throw new InvalidOperationException("Can't run Windows Phone 8 emulator.");
                 }
