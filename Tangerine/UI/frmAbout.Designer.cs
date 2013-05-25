@@ -37,6 +37,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblBasedOn = new System.Windows.Forms.Label();
             this.lnkXAPSpy = new System.Windows.Forms.LinkLabel();
+            this.lblVersion = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -57,9 +58,9 @@
             this.lblAppName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblAppName.Location = new System.Drawing.Point(80, 12);
             this.lblAppName.Name = "lblAppName";
-            this.lblAppName.Size = new System.Drawing.Size(86, 13);
+            this.lblAppName.Size = new System.Drawing.Size(64, 13);
             this.lblAppName.TabIndex = 1;
-            this.lblAppName.Text = "Tangerine 0.3";
+            this.lblAppName.Text = "Tangerine";
             // 
             // lblContributors
             // 
@@ -126,6 +127,16 @@
             this.lnkXAPSpy.Text = "XAPSpy";
             this.lnkXAPSpy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkXAPSpy_LinkClicked);
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblVersion.Location = new System.Drawing.Point(141, 12);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(25, 13);
+            this.lblVersion.TabIndex = 1;
+            this.lblVersion.Text = "0.0";
+            // 
             // frmAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -138,6 +149,7 @@
             this.Controls.Add(this.lblAndrey);
             this.Controls.Add(this.lblContributors);
             this.Controls.Add(this.lblBasedOn);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblAppName);
             this.Controls.Add(this.btnOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -163,5 +175,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label lblBasedOn;
         private System.Windows.Forms.LinkLabel lnkXAPSpy;
+        private System.Windows.Forms.Label lblVersion;
     }
 }
