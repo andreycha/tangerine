@@ -1,7 +1,7 @@
 Tangerine
 =========
 
-Tngerine is a tool for inspecting Windows Phone applications. Based on [XAPSpy](http://github.com/sensepost/xapspy). It allows you to do three things:
+Tangerine is a tool for inspecting Windows Phone applications. Based on [XAPSpy](http://github.com/sensepost/xapspy). It allows you to do three things:
 
  - Automate all routine work with XAP files (parsing, deploying etc.)
  - Log method calls, including parameters values and return values
