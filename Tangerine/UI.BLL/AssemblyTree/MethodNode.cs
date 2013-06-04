@@ -1,7 +1,8 @@
-﻿using System.Drawing;
-using Aga.Controls.Tree;
+﻿using Aga.Controls.Tree;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
+using System.Drawing;
+using System.Linq;
 using Tangerine.BLL;
 using Tangerine.Properties;
 
@@ -11,6 +12,31 @@ namespace Tangerine.UI.BLL
     {
         private const string GetLabel = "get";
         private const string SetLabel = "set";
+
+        private static string[] ioNamespaces = new string[] { 
+            //wp7
+            "Microsoft.Devices", "Microsoft.Phone.BackgroundAudio", "Microsoft.Phone.Data.Linq", "Microsoft.Phone.Storage",
+            "System.Data.Linq", "System.Device.Location", "System.IO", "System.Xml",
+            //wp8
+            "Windows.ApplicationModel.DataTransfer", "Windows.Devices.Input", "Windows.Devices.Sensors", "Windows.Storage", 
+            "Windows.Phone.Devices", "Windows.Phone.Media.Capture", " Windows.Phone.Media.Devices", "Windows.Phone.Speech",
+            "Windows.Phone.Storage"
+        };
+
+        private static string[] netNamespaces = new string[] { 
+            //wp7
+            "Microsoft.Phone.BackgroundTransfer", "Microsoft.Phone.Net.NetworkInformation", "Microsoft.Phone.Networking.Voip", 
+            "Microsoft.Phone.Notification", "System.Net", 
+            //wp8
+            "Windows.Devices.Geolocation", "Windows.Networking", "Windows.Phone.Networking"
+        };
+
+        private static string[] securityNamespaces = new string[] { 
+            //wp7
+            "Microsoft.Phone.Marketplace", "Microsoft.Phone.SecureElement", "Microsoft.Phone.Wallet", "System.Security",
+            //wp8
+            "Windows.ApplicationModel.Store", "Windows.Security", "Windows.Phone.Management.Deployment"
+        };
 
         public static MethodNode CreateNode(MethodDefinition definition)
         {
@@ -47,16 +73,18 @@ namespace Tangerine.UI.BLL
                     || instruction.OpCode == OpCodes.Callvirt
                     || instruction.OpCode == OpCodes.Calli)
                 {
-                    var operand = instruction.Operand.ToString();
-                    if (operand.Contains("System.IO"))
+                    var operandNS = (instruction.Operand as MemberReference).DeclaringType.Namespace;
+                    //haha funny way to check if searched Namespace is the first in operand Namespace
+                    //if (ioNamespaces.Where(ns => operandNS.Contains(ns) && new string(operandNS.Take(ns.Length).ToArray()) == ns).Count() > 0)
+                    if (ioNamespaces.Where(ns => operandNS.Contains(ns)).Count() > 0)
                     {
                         node.IOIcon = Resources.file;
                     }
-                    else if (operand.Contains("System.Net"))
+                    else if (netNamespaces.Where(ns => operandNS.Contains(ns)).Count() > 0)
                     {
                         node.NetIcon = Resources.network;
                     }
-                    else if (operand.Contains("System.Security"))
+                    else if (securityNamespaces.Where(ns => operandNS.Contains(ns)).Count() > 0)
                     {
                         node.SecurityIcon = Resources.security;
                     }
