@@ -50,9 +50,6 @@
             this.nodeIcon1 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon2 = new Aga.Controls.Tree.NodeControls.NodeIcon();
             this.nodeIcon3 = new Aga.Controls.Tree.NodeControls.NodeIcon();
-            this.cbxCryptoFilter = new System.Windows.Forms.CheckBox();
-            this.cbxNetFilter = new System.Windows.Forms.CheckBox();
-            this.cbxIOFilter = new System.Windows.Forms.CheckBox();
             this.tabXapFileInformation = new System.Windows.Forms.TabControl();
             this.tabGeneralInfo = new System.Windows.Forms.TabPage();
             this.pnlScreenResolutions = new System.Windows.Forms.Panel();
@@ -89,6 +86,11 @@
             this.lblGlobalHooks = new System.Windows.Forms.Label();
             this.lblMethodHooks = new System.Windows.Forms.Label();
             this.lbMethods = new System.Windows.Forms.ListBox();
+            this.cbxCryptoFilter = new System.Windows.Forms.CheckBox();
+            this.cbxNetFilter = new System.Windows.Forms.CheckBox();
+            this.cbxIOFilter = new System.Windows.Forms.CheckBox();
+            this.nodeIcon5 = new Aga.Controls.Tree.NodeControls.NodeIcon();
+            this.cbxURIAndFileHandlerFilter = new System.Windows.Forms.CheckBox();
             this.menu.SuspendLayout();
             this.pnlTargetApp.SuspendLayout();
             this.tabControlMain.SuspendLayout();
@@ -251,6 +253,7 @@
             // 
             // splitContainer.Panel1
             // 
+            this.splitContainer.Panel1.Controls.Add(this.cbxURIAndFileHandlerFilter);
             this.splitContainer.Panel1.Controls.Add(this.pnlTreeAssemblies);
             this.splitContainer.Panel1.Controls.Add(this.cbxCryptoFilter);
             this.splitContainer.Panel1.Controls.Add(this.cbxNetFilter);
@@ -269,9 +272,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlTreeAssemblies.Controls.Add(this.trvAssemblies);
-            this.pnlTreeAssemblies.Location = new System.Drawing.Point(5, 33);
+            this.pnlTreeAssemblies.Location = new System.Drawing.Point(5, 60);
             this.pnlTreeAssemblies.Name = "pnlTreeAssemblies";
-            this.pnlTreeAssemblies.Size = new System.Drawing.Size(315, 434);
+            this.pnlTreeAssemblies.Size = new System.Drawing.Size(315, 407);
             this.pnlTreeAssemblies.TabIndex = 6;
             // 
             // trvAssemblies
@@ -289,8 +292,9 @@
             this.trvAssemblies.NodeControls.Add(this.nodeIcon1);
             this.trvAssemblies.NodeControls.Add(this.nodeIcon2);
             this.trvAssemblies.NodeControls.Add(this.nodeIcon3);
+            this.trvAssemblies.NodeControls.Add(this.nodeIcon5);
             this.trvAssemblies.SelectedNode = null;
-            this.trvAssemblies.Size = new System.Drawing.Size(315, 434);
+            this.trvAssemblies.Size = new System.Drawing.Size(315, 407);
             this.trvAssemblies.TabIndex = 2;
             this.trvAssemblies.Text = "treeViewAdv1";
             this.trvAssemblies.NodeMouseDoubleClick += new System.EventHandler<Aga.Controls.Tree.TreeNodeAdvMouseEventArgs>(this.trvAssemblies_NodeMouseDoubleClick);
@@ -314,45 +318,6 @@
             // nodeIcon3
             // 
             this.nodeIcon3.DataPropertyName = "SecurityIcon";
-            // 
-            // cbxCryptoFilter
-            // 
-            this.cbxCryptoFilter.Image = global::Tangerine.Properties.Resources.security;
-            this.cbxCryptoFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.cbxCryptoFilter.Location = new System.Drawing.Point(183, 3);
-            this.cbxCryptoFilter.Name = "cbxCryptoFilter";
-            this.cbxCryptoFilter.Size = new System.Drawing.Size(76, 31);
-            this.cbxCryptoFilter.TabIndex = 5;
-            this.cbxCryptoFilter.Text = "Security";
-            this.cbxCryptoFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbxCryptoFilter.UseVisualStyleBackColor = true;
-            this.cbxCryptoFilter.CheckedChanged += new System.EventHandler(this.cbxCryptoFilter_CheckedChanged);
-            // 
-            // cbxNetFilter
-            // 
-            this.cbxNetFilter.Image = global::Tangerine.Properties.Resources.network;
-            this.cbxNetFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.cbxNetFilter.Location = new System.Drawing.Point(100, 3);
-            this.cbxNetFilter.Name = "cbxNetFilter";
-            this.cbxNetFilter.Size = new System.Drawing.Size(77, 31);
-            this.cbxNetFilter.TabIndex = 4;
-            this.cbxNetFilter.Text = "Network";
-            this.cbxNetFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbxNetFilter.UseVisualStyleBackColor = true;
-            this.cbxNetFilter.CheckedChanged += new System.EventHandler(this.cbxNetFilter_CheckedChanged);
-            // 
-            // cbxIOFilter
-            // 
-            this.cbxIOFilter.Image = global::Tangerine.Properties.Resources.file;
-            this.cbxIOFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.cbxIOFilter.Location = new System.Drawing.Point(5, 3);
-            this.cbxIOFilter.Name = "cbxIOFilter";
-            this.cbxIOFilter.Size = new System.Drawing.Size(89, 31);
-            this.cbxIOFilter.TabIndex = 3;
-            this.cbxIOFilter.Text = "File System";
-            this.cbxIOFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.cbxIOFilter.UseVisualStyleBackColor = true;
-            this.cbxIOFilter.CheckedChanged += new System.EventHandler(this.cbxIOFilter_CheckedChanged);
             // 
             // tabXapFileInformation
             // 
@@ -792,6 +757,62 @@
             this.lbMethods.TabIndex = 20;
             this.lbMethods.SelectedIndexChanged += new System.EventHandler(this.lbMethods_SelectedIndexChanged);
             // 
+            // cbxCryptoFilter
+            // 
+            this.cbxCryptoFilter.Image = global::Tangerine.Properties.Resources.security;
+            this.cbxCryptoFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbxCryptoFilter.Location = new System.Drawing.Point(183, 3);
+            this.cbxCryptoFilter.Name = "cbxCryptoFilter";
+            this.cbxCryptoFilter.Size = new System.Drawing.Size(76, 31);
+            this.cbxCryptoFilter.TabIndex = 5;
+            this.cbxCryptoFilter.Text = "Security";
+            this.cbxCryptoFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbxCryptoFilter.UseVisualStyleBackColor = true;
+            this.cbxCryptoFilter.CheckedChanged += new System.EventHandler(this.cbxCryptoFilter_CheckedChanged);
+            // 
+            // cbxNetFilter
+            // 
+            this.cbxNetFilter.Image = global::Tangerine.Properties.Resources.network;
+            this.cbxNetFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbxNetFilter.Location = new System.Drawing.Point(100, 3);
+            this.cbxNetFilter.Name = "cbxNetFilter";
+            this.cbxNetFilter.Size = new System.Drawing.Size(77, 31);
+            this.cbxNetFilter.TabIndex = 4;
+            this.cbxNetFilter.Text = "Network";
+            this.cbxNetFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbxNetFilter.UseVisualStyleBackColor = true;
+            this.cbxNetFilter.CheckedChanged += new System.EventHandler(this.cbxNetFilter_CheckedChanged);
+            // 
+            // cbxIOFilter
+            // 
+            this.cbxIOFilter.Image = global::Tangerine.Properties.Resources.file;
+            this.cbxIOFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbxIOFilter.Location = new System.Drawing.Point(5, 3);
+            this.cbxIOFilter.Name = "cbxIOFilter";
+            this.cbxIOFilter.Size = new System.Drawing.Size(89, 31);
+            this.cbxIOFilter.TabIndex = 3;
+            this.cbxIOFilter.Text = "File System";
+            this.cbxIOFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbxIOFilter.UseVisualStyleBackColor = true;
+            this.cbxIOFilter.CheckedChanged += new System.EventHandler(this.cbxIOFilter_CheckedChanged);
+            // 
+            // nodeIcon5
+            // 
+            this.nodeIcon5.DataPropertyName = "URIAndFileHandlerIcon";
+            // 
+            // cbxURIAndFileHandlerFilter
+            // 
+            this.cbxURIAndFileHandlerFilter.Image = global::Tangerine.Properties.Resources.link;
+            this.cbxURIAndFileHandlerFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.cbxURIAndFileHandlerFilter.Location = new System.Drawing.Point(5, 31);
+            this.cbxURIAndFileHandlerFilter.Name = "cbxURIAndFileHandlerFilter";
+            this.cbxURIAndFileHandlerFilter.Size = new System.Drawing.Size(135, 23);
+            this.cbxURIAndFileHandlerFilter.TabIndex = 7;
+            this.cbxURIAndFileHandlerFilter.Text = "URI and File Handler";
+            this.cbxURIAndFileHandlerFilter.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.cbxURIAndFileHandlerFilter.UseVisualStyleBackColor = true;
+            this.cbxURIAndFileHandlerFilter.CheckedChanged += new System.EventHandler(this.cbxURIAndFileHandlerFilter_CheckedChanged);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -909,6 +930,8 @@
         private System.Windows.Forms.Panel pnlTreeAssemblies;
         private System.Windows.Forms.CheckBox cbxCryptoFilter;
         private System.Windows.Forms.CheckBox cbxNetFilter;
+        private Aga.Controls.Tree.NodeControls.NodeIcon nodeIcon5;
+        private System.Windows.Forms.CheckBox cbxURIAndFileHandlerFilter;
 
     }
 }

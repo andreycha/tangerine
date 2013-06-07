@@ -33,6 +33,8 @@ namespace Tangerine.UI.BLL
         {
             Icon = Resources._class;
         }
+
+        public Image URIAndFileHandlerIcon { get; set; }
     }
 
     public class EnumNode : TreeNode

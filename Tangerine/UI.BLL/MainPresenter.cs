@@ -12,6 +12,7 @@ using Tangerine.BLL.Hooks;
 using Tangerine.BLL.Tasks;
 using Tangerine.Common;
 using Tangerine.Devices;
+using Tangerine.Properties;
 
 namespace Tangerine.UI.BLL
 {
@@ -134,6 +135,8 @@ namespace Tangerine.UI.BLL
                 }
 
                 var typeNode = new TypeNode(typeDefinition.Name);
+                if (typeDefinition.BaseType.FullName.Equals("System.Windows.Navigation.UriMapperBase"))
+                    typeNode.URIAndFileHandlerIcon = Resources.link;
                 assemblyNode.Nodes.Add(typeNode);
                 ProcessTypeNodeToTree(typeNode, typeDefinition);
             }

@@ -180,6 +180,7 @@
     <Content Include="EasyHook64Svc.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\link.png" />
     <None Include="Resources\enum.png" />
     <None Include="Resources\class.png" />
     <None Include="Resources\method.png" />

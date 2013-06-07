@@ -529,5 +529,10 @@ namespace Tangerine.UI
         {
             if (m_TreeModel != null) m_TreeModel.FilterSecurity = cbxCryptoFilter.Checked;
         }
+
+        private void cbxURIAndFileHandlerFilter_CheckedChanged(object sender, EventArgs e)
+        {
+            if (m_TreeModel != null) m_TreeModel.FilterURIAndFileHandler = cbxURIAndFileHandlerFilter.Checked;
+        }
     }    
 }

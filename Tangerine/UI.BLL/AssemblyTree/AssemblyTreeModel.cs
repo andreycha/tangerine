@@ -69,6 +69,21 @@ namespace Tangerine.UI.BLL
             }
         }
 
+        private bool m_filterURIAndFileHandler;
+
+        public bool FilterURIAndFileHandler
+        {
+            get
+            {
+                return m_filterURIAndFileHandler;
+            }
+            set
+            {
+                m_filterURIAndFileHandler = value;
+                OnStructureChanged(new TreePathEventArgs());
+            }
+        }
+
         public AssemblyTreeModel()
         {
             _root = new Node();
@@ -109,6 +124,22 @@ namespace Tangerine.UI.BLL
                 }
             }
             return null;
+        }
+
+        bool IsContainURIAndFileHandler(Node node)
+        {
+            if (node is TypeNode)
+                return ((TypeNode)node).URIAndFileHandlerIcon != null;
+            //show all methods of class
+            else if (node is MethodNode)
+                return true;
+            else
+            {
+                var result = false;
+                foreach (var child in node.Nodes)
+                    result = result || IsContainURIAndFileHandler(child);
+                return result;
+            }
         }
 
         bool IsContainIO(Node node)
@@ -160,13 +191,15 @@ namespace Tangerine.UI.BLL
                 else foreach (Node n in node.Nodes)
                 {
                     var needToAdd = false;
-                    if (!m_filterIO && !m_filterNet && !m_filterSecurity)
+                    if (!m_filterIO && !m_filterNet && !m_filterSecurity && !m_filterURIAndFileHandler)
                         needToAdd = true;
                     if (!needToAdd && m_filterIO && IsContainIO(n))
                         needToAdd = true;
                     if (!needToAdd && m_filterNet && IsContainNet(n))
                         needToAdd = true;
                     if (!needToAdd && m_filterSecurity && IsContainSecurity(n))
+                        needToAdd = true;
+                    if (!needToAdd && m_filterURIAndFileHandler && IsContainURIAndFileHandler(n))
                         needToAdd = true;
                     if (needToAdd)
                         yield return n;
