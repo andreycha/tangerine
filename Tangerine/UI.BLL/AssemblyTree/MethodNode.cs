@@ -1,8 +1,8 @@
-﻿using Aga.Controls.Tree;
+﻿using System.Drawing;
+using System.Linq;
+using Aga.Controls.Tree;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
-using System.Drawing;
-using System.Linq;
 using Tangerine.BLL;
 using Tangerine.Properties;
 
@@ -74,17 +74,16 @@ namespace Tangerine.UI.BLL
                     || instruction.OpCode == OpCodes.Calli)
                 {
                     var operandNS = (instruction.Operand as MemberReference).DeclaringType.Namespace;
-                    //haha funny way to check if searched Namespace is the first in operand Namespace
-                    //if (ioNamespaces.Where(ns => operandNS.Contains(ns) && new string(operandNS.Take(ns.Length).ToArray()) == ns).Count() > 0)
-                    if (ioNamespaces.Where(ns => operandNS.Contains(ns)).Count() > 0)
+
+                    if (ioNamespaces.Any(ns => operandNS.StartsWith(ns)))
                     {
                         node.IOIcon = Resources.file;
                     }
-                    else if (netNamespaces.Where(ns => operandNS.Contains(ns)).Count() > 0)
+                    else if (netNamespaces.Any(ns => operandNS.StartsWith(ns)))
                     {
                         node.NetIcon = Resources.network;
                     }
-                    else if (securityNamespaces.Where(ns => operandNS.Contains(ns)).Count() > 0)
+                    else if (securityNamespaces.Any(ns => operandNS.StartsWith(ns)))
                     {
                         node.SecurityIcon = Resources.security;
                     }
